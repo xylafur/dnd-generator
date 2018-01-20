@@ -1,10 +1,9 @@
 """ THis is the module that defines all of the characters and their atributes
 """
 
+#list of tuples constaining (class name, construtor)
 character_types = [
-    pass 
-    pass 
-    ("wizard", Wizard)
+    ("Conjurer", Conjurer)
 ]
 
 class Ability:
@@ -40,4 +39,8 @@ class Character:
 
 class Wizard(Character):
     def __init__(self):
-        self.abilities = None
+        self.spells = []
+
+class Conjurer(Wizard):
+    pass 
+
