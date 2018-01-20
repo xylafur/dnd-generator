@@ -1,0 +1,4 @@
+races = [
+    "elf",
+    "dwarf"
+]

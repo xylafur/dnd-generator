@@ -2,6 +2,10 @@
 
 import random
 
+from races import races
+from namer import generate_name
+
+
 cause_of_death = [
     "Unknown", "Murdered", "killed in battle", 
     "Accident related to occupation", "Accident unrelated to occupation", 
@@ -82,7 +86,10 @@ def weird_event():
 
 def love_event():
     gender = random.choice(["man", "woman"])
-    name = None #get name from Ray's function 
+
+    gender = random.randint(0, 1)
+    race = random.choice(races)
+    name = generate_name(race, gender)
 
     return "You fell in love with a {} named {} {} years ago".format(gender,
         name, random.randint(1, 10))
@@ -109,8 +116,10 @@ def enemy_event():
     dangerous = random.choice(["in danger", "not in danger"])
     blame = random.choice(["to blame", "not to blame"])
 
-    #TODO: GENERATE NAME OF ENEMY
-    name = "NEED TO GENERATE NAME"
+    gender = random.randint(0, 1)
+    race = random.choice(races)
+    name = generate_name(race, gender)
+
     event = "You made an enemy with {}, {} years ago.  You are {} for this.  Currently you are {}".format(
         name, random.randint(1, 4),  blame, dangerous)
 
@@ -133,8 +142,9 @@ def boons_event():
 def friend_event():
     """ Generate a random name and maybe some more details about this person
     """
-    #TODO: GENERATE NAME OF ENEMY
-    name = "NEED TO GENERATE NAME"
+    gender = random.randint(0, 1)
+    race = random.choice(races)
+    name = generate_name(race, gender)
 
     return "You made a friend earlier in life with {}".format(name)
 
