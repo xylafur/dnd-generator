@@ -4,8 +4,12 @@
 from characters import *
 from namer import *
 
+
+
 def Main():
     print('DnD tool generating characters')
+
+    
 
     pass
 

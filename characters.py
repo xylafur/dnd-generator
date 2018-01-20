@@ -6,23 +6,14 @@ character_types = [
     ("Conjurer", Conjurer)
 ]
 
-class Ability:
-    def __init__(self, value, modifier=0):
-        self.value = value 
-        self.modifier = modifier
+def generate_NPC(first_names, last_names):
+    assert(first_names and last_names)
+    assert(type(first_names)==list and type(last_names)==list)
+    assert(all(type(p)==str for p in first_names)
+    assert(all(type(p)==str for p in last_names)
 
-    def set_modifier(self, mod_val):
-        this.modifier = modifier
 
-#I couldn't think of a better way to do this..
-class Abilities:
-    def __init__(self, str, dex, con, wis, int, cha):
-        self.str = Ability(str)
-        self.dex = Ability(dex)
-        self.con = Ability(con)
-        self.wis = Ability(wis)
-        self.int = Ability(int)
-        self.cha = Ability(cha)
+    pass
 
     def set_modifiers(self, str, dex, con, wis, int, cha):
         self.str.set_modifier(str)
