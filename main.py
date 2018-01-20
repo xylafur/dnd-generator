@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 
-# imports 
+def namer_util(args):
+    from namer import generate_name
+    for n in range(args.num_names):
+        print(generate_name(args.race, args.gender))
+    pass
+
+
 import argparse
-
-def Main():
-    print('DnD tool generating characters')
-
+if __name__ == '__main__':
     from os import sys
     prognm = sys.argv[0]
 
@@ -15,19 +18,30 @@ def Main():
 
     # sub argument parser for namer utility
     namer_parser = subparser.add_parser('namer', help='namer help')
-    namer_parser.add_argument('-n', action='store', type=int, default=1)
+    namer_parser.set_defaults(which='namer')
+    namer_parser.add_argument('-n', '--num_names', action='store', type=int, default=1, help='number of names to generate')
+    namer_parser.add_argument('-r', '--race', action='store', type=str, default='elf', help='race of names to generate, supported races=[elf, dwarf, orc]')
+    namer_parser.add_argument('-g', '--gender', action='store', type=int, default=0, help='gender of names to generate, 0 being male, 1 being female')
 
     # sub arugment parser for char gen
-    char_parser = subparser.add_parser('namer', help='namer help')
-    char_parser.add_argument('-n', action='store', type=int, default=1)
+    char_parser = subparser.add_parser('chargen', help='namer help')
+    char_parser.set_defaults(which='chargen')
+    char_parser.add_argument('-p', action='store', type=int, default=1)
 
+    # fetch arguments
+    args = parser.parse_args()
 
     # test print
-    print(parser.parse_args())
+    #print(args)
+
+    # utility dictionary
+    utils = {
+        'namer':namer_util
+    }
+
+    # call function
+    utils[args.which](args)
 
     pass
-
-if __name__ == '__main__':
-    Main()
 
 
