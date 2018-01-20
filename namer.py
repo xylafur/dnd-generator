@@ -88,7 +88,7 @@ def generate_name(race, gender):
         #'orc': lambda g : (orc_fem_1, orc_fem_2) if g else (orc_male_1, orc_male_2),
     }
     if race not in race_pair:
-        print('Race {} is not a supported race: {}'.format(race, repr(supported_races)))
+        print('Race '+race+' is not a supported race.')
         return 'no-name'
 
     nm1, nm2 = race_pair[race](gender)
