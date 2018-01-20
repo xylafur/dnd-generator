@@ -8,7 +8,7 @@ def read_names(path_to_names='./assets/names.txt'):
         character_names.extend(names.readline().split())
     return character_names
 
-def name_elf(gender):
+def name_elf(gender=0):
     """ returns an elf name """
     elf_male_1 = [
     "Ad","Ae","Bal","Bei","Car","Cra","Dae","Dor","El","Ela",
@@ -43,7 +43,7 @@ def name_elf(gender):
     return random.choice(nm1) + random.choice(nm2)
 
 
-def name_dwarf(gender):
+def name_dwarf(gender=0):
     """ returns an dwarf name """
     dwarf_male_1 = [
     "Ad","Am","Arm","Baer","Daer","Bal","Ban","Bar","Bel","Ben",
@@ -116,6 +116,15 @@ def name_orc(gender):
     else:
         return random.choice(nm1) + random.choice(nm2) + random.choice(nm3) +\
                 random.choice(nm2) + random.choice(nm4)
+
+    pass
+
+
+def name_human(gender=0):
+    male_nm = []
+    female_nm = []
+    pass
+
 
 
 def generate_name(race, gender):

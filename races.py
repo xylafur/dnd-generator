@@ -1,4 +1,6 @@
 races = [
     "elf",
-    "dwarf"
+    "dwarf",
+    "orc",
+    "human",
 ]

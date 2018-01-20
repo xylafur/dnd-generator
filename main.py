@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 
 def namer_util(args):
+    if args.list:
+        from races import races
+        print('Supported races: ' + str(races))
+        return
+
     from namer import generate_name
     for n in range(args.num_names):
         print(generate_name(args.race, args.gender))
@@ -19,8 +24,9 @@ if __name__ == '__main__':
     # sub argument parser for namer utility
     namer_parser = subparser.add_parser('namer', help='namer help')
     namer_parser.set_defaults(which='namer')
+    namer_parser.add_argument('-l', '--list', action='store_true', help='list supported races')
     namer_parser.add_argument('-n', '--num_names', action='store', type=int, default=1, help='number of names to generate')
-    namer_parser.add_argument('-r', '--race', action='store', type=str, default='elf', help='race of names to generate, supported races=[elf, dwarf, orc]')
+    namer_parser.add_argument('-r', '--race', action='store', type=str, default='elf', help='race of names to generate, default=elf')
     namer_parser.add_argument('-g', '--gender', action='store', type=int, default=0, help='gender of names to generate, 0 being male, 1 being female')
 
     # sub arugment parser for char gen
@@ -32,7 +38,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # test print
-    #print(args)
+    # print(args)
 
     # utility dictionary
     utils = {
