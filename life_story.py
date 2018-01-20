@@ -5,8 +5,8 @@ from random_ext import roll_event
 from random import choice, randint
 
 from backstory_generator import cause_of_death, get_life_events
-
 from races import races
+from namer import generate_name
 
 absent_parents = ["None", "Institution, such as an asylum", "Temple", 
                  "Orphanage", "guardian", "aunt", "uncle", "aunt and uncle", 
@@ -17,7 +17,17 @@ childhood_home_modifiers = {
     'Comfortable': 10, 'Wealthy': 20, 'Aristocratic': 40
 }
 
-def generate_life_story(race, age=None):
+def generate_life_story(race=None, age=None, gender=None, name=None):
+    if not gender:
+        gender = choice(["male", "female"])
+        gender_opt = 0 if "male" else 1
+    if not race:
+        race = choice(races)
+    if not name:
+        name = generate_name(race, gender_opt)
+    if not age:
+        age = randint(20, 100)
+
     parents = roll_event(100, [((1, 95), "You know who your parents are"),
                           ((95, 100), "You don't know who your parents are")])
     birthplace = roll_event(100, 
@@ -109,19 +119,22 @@ def generate_life_story(race, age=None):
 
     #there is a personal decisions section that can be implemented later.. alot of work
 
-    if not age:
-        age = randint(20, 100)
-
+    
     life_events = get_life_events(age)
 
-
-    return (parents, birthplace, number_siblings, family, reason_absent, 
-           family_lifestyle, childhood_home, childhood_memories)
-
+    return """\
+You are {}.  A {}ish {}.
+You were born in {} and {}. You have {} siblings and were raised by {}.
+You grew up in (a) {}.  Your childhood memories {}.
+You are currently {} years old and have had an eventful life.
+Life Events:
+{}
+    """.format(name, race, gender,
+               birthplace, parents, number_siblings, family, childhood_home, 
+               childhood_memories, age, life_events)
 
 def run_tests():
-    for _ in range(100):
-        print(generate_life_story(choice(races)))
+    print(generate_life_story())
 
 if __name__ == '__main__':
     run_tests()

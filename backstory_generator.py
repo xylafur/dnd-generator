@@ -61,7 +61,10 @@ def get_life_events(age):
     num_events = number_life_events(age)
     for _ in range(num_events):
         events.append(get_life_event())
-    return events
+    ret = ""
+    for event in events:
+        ret += '    ' + event + '\n'
+    return ret 
 
 
 def weird_event():
