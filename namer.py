@@ -85,7 +85,7 @@ def name_dwarf(gender=0):
     "ros","ryl","ryn","sael","selle","sora","syl","thel","thiel","tin",
     "tyn","va","van","via","vian","waen","win","wyn","wynn"]
 
-    nm1, nm2 = (elf_fem_1, elf_fem_2) if gender else (elf_male_1, elf_male_2)
+    nm1, nm2 = (dwarf_fem_1, dwarf_fem_2) if gender else (dwarf_male_1, dwarf_male_2)
     return random.choice(nm1) + random.choice(nm2)
 
 
