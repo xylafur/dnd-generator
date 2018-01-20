@@ -15,6 +15,7 @@ def namer_util(args):
 import argparse
 if __name__ == '__main__':
     from os import sys
+
     prognm = sys.argv[0]
 
     parser = argparse.ArgumentParser(prog=prognm,
@@ -35,10 +36,12 @@ if __name__ == '__main__':
     char_parser.add_argument('-p', action='store', type=int, default=1)
 
     # fetch arguments
-    args = parser.parse_args()
+    args, leftovers = parser.parse_known_args()
+    print(args)
 
-    # test print
-    # print(args)
+    if len(sys.argv) == 1:
+        parser.print_usage()
+        parser.exit(1)
 
     # utility dictionary
     utils = {
@@ -46,7 +49,8 @@ if __name__ == '__main__':
     }
 
     # call function
-    utils[args.which](args)
+    if args.which in utils:
+        utils[args.which](args)
 
     pass
 
