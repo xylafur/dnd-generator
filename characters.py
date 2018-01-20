@@ -1,10 +1,9 @@
 """ THis is the module that defines all of the characters and their atributes
 """
+from spell import Spell
 
 character_types = [
-    pass 
-    pass 
-    ("wizard", Wizard)
+    ("Conjurer", Conjurer)
 ]
 
 class Ability:
@@ -40,4 +39,9 @@ class Character:
 
 class Wizard(Character):
     def __init__(self):
-        self.abilities = None
+        self.spells = []
+        self.spell_slots = 0
+
+class Conjurer(Wizard):
+    def __init__(self):
+        pass
