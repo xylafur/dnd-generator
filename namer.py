@@ -141,7 +141,7 @@ def generate_name(race, gender):
     }
     if race not in race_pair:
         print('Race '+race+' is not a supported race.')
-        return 'no-name'
+        return 'unsupported_race:'+race
 
     return race_pair[race](gender)
 
