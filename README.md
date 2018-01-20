@@ -1,6 +1,6 @@
-# dnd-generator
+# Dungeons and Dragons-Generator
 
-Utility for use by our dnd group during our campaign 
+Utility for use by our D&D group during our campaign 
 
 Will eventually be able to 
     Generate a random character
@@ -12,4 +12,5 @@ Will eventually be able to
 Things that would be super awesome to implement (but would be very difficult):
     Random dungeon generator
     Lore generator
+    Map Generator
 
