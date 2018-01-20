@@ -1,35 +1,33 @@
 #!/usr/bin/env python3
 
 # imports 
-from characters import *
-
-def name_gen(argv):
-
-
-
-
-    from namer import generate_name
-    generate_name('', 1)
-
-    pass
-
+import argparse
 
 def Main():
     print('DnD tool generating characters')
 
-    from os import sys.argv as argv
-    utilities = {
-        'namer':name_gen
-    }
+    from os import sys
+    prognm = sys.argv[0]
 
-    if argv[1] not in utilities:
-        raise Exception('Unsupported utility: '+argv[1])
+    parser = argparse.ArgumentParser(prog=prognm,
+                                     description=prognm+' is a DnD toolkit')
+    subparser = parser.add_subparsers(help='sub command help')
 
-    utilities[argv[1]](argv)
+    # sub argument parser for namer utility
+    namer_parser = subparser.add_parser('namer', help='namer help')
+    namer_parser.add_argument('-n', action='store', type=int, default=1)
+
+    # sub arugment parser for char gen
+    char_parser = subparser.add_parser('namer', help='namer help')
+    char_parser.add_argument('-n', action='store', type=int, default=1)
+
+
+    # test print
+    print(parser.parse_args())
 
     pass
 
-if _name__ == '__main__':
+if __name__ == '__main__':
     Main()
 
 
