@@ -6,6 +6,7 @@ from os import sys
 from background_info.life_story import generate_life_story
 from background_info.namer import generate_name
 from races import races
+from random_ext import dice_roll
 
 
 def namer_util(args):
@@ -21,6 +22,8 @@ def namer_util(args):
 def chargen_util(args):
     print(generate_life_story())
 
+def dice_util(args):
+    print(dice_roll(args.dice[0]))
 
 if __name__ == '__main__':
     prognm = sys.argv[0]
@@ -42,9 +45,17 @@ if __name__ == '__main__':
     char_parser.set_defaults(which='chargen')
     char_parser.add_argument('-p', action='store', type=int, default=1)
 
+    #dice utility parser
+    dice_parser = subparser.add_parser('diceroll', help='diceroll help')
+    dice_parser.set_defaults(which='diceroll')
+    dice_parser.add_argument('dice', metavar='D', type=int, nargs='+',
+                    help='Highest number on the die you want to roll')
+    dice_parser.add_argument('-n', '--number', action='store', type=int, 
+                             default=1, help="number dice to roll")
+
     # fetch arguments
     args, leftovers = parser.parse_known_args()
-    print(args)
+    #print(args)
 
     if len(sys.argv) <= 1:
         parser.print_help()
@@ -53,7 +64,8 @@ if __name__ == '__main__':
     # utility dictionary
     utils = {
         'namer': namer_util,
-        'chargen': chargen_util
+        'chargen': chargen_util,
+        'diceroll': dice_util 
     }
 
     try:
@@ -62,6 +74,7 @@ if __name__ == '__main__':
             utils[args.which](args)
 
     except AttributeError:
+        print("Error in parsing arguments")
         parser.print_help()
         sys.exit(1)
 

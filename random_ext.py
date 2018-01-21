@@ -48,3 +48,14 @@ def roll_event(dice, events, low=1, modifier=0):
     raise NoEventTriggeredException("The roll {} was not within the range of "
                                     "any events supplied to roll_event"
                                     .format(roll))
+
+def dice_roll(dice, number_dice=1, advantage=False, disadvantage=False):
+    total = 0 
+    for _ in range(number_dice):
+        if advantage:
+            total+= max(random.randint(1, dice), random.randint(1, dice)) 
+        elif disadvantage:
+            total+= min(random.randint(1, dice), random.randint(1, dice)) 
+        else:
+            total += random.randint(1, dice)
+    return total
