@@ -7,6 +7,7 @@ import random
 class InvalidRangeException(Exception):pass
 class NoEventTriggeredException(Exception):pass
 
+
 def within_range(number, range):
     """ Returns true if the number is within the range supplied 
         The range should either be a tuple or a list of size 2
@@ -21,6 +22,7 @@ def within_range(number, range):
                                     " than or equal to the second")
     return number >= range[0] and number <= range[1]
 
+
 def roll_event(dice, events, low=1, modifier=0):
     """ Function that will 'roll' a dir with `dice` sides and uses the events 
         argument to determine which event is selected
@@ -32,10 +34,10 @@ def roll_event(dice, events, low=1, modifier=0):
                 trigger the event, and a string to return upon the event being 
                 triggered.
 
-                ex: [((0, 10), "Character dies"), 
-                     ((11, 20), "Character Lives"),
-                     ...
-                    ]
+                Example: [((0, 10), "Character dies"),
+                         ((11, 20), "Character Lives"),
+                         ...
+                        ]
     """
 
     roll = random.randint(low, dice)
@@ -43,5 +45,6 @@ def roll_event(dice, events, low=1, modifier=0):
     for event in events:
         if within_range(roll, event[0]):
             return event[1]
-    raise NoEventTriggeredException("The roll {} was not within the".format(roll)
-                                    | "range of any events supplied to roll_event")
+    raise NoEventTriggeredException("The roll {} was not within the range of "
+                                    "any events supplied to roll_event"
+                                    .format(roll))

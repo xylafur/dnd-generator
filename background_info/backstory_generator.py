@@ -2,20 +2,22 @@
 
 import random
 
+from lib.random_die import roll_d4, roll_d6, roll_d8, roll_d10, roll_d12, roll_d20, roll_d100
 from races import races
-from namer import generate_name
+from background_info.namer import generate_name
 
 
 cause_of_death = [
     "Unknown", "Murdered", "killed in battle", 
     "Accident related to occupation", "Accident unrelated to occupation", 
-    "Old Age", "Disease", "Old Age", "Disease", "Aparent Suicide", "Torn apart by animal", 
+    "Old Age", "Disease", "Old Age", "Disease", "Apparent Suicide", "Torn apart by animal",
     "Consumed by monster", "Executed for crime", "Tortured to death", "Bizare event"
 ]
 
+
 def get_life_event():
-    d100 = random.randint(0, 99)
-    if d100 == 0:
+    d100 = roll_d100(1)
+    if d100 == 1:
         return "Weird event: " + weird_event()
     if d100 <= 10:
         return "Boons event: " + boons_event()
@@ -41,6 +43,7 @@ def get_life_event():
         return "Crime event: " + crime_event()
     return "Arcane event: " + arcane_event()
 
+
 def get_life_events(age):
     """ returns a list of strings, each being a life event.
         The number of life events is based on the age of a person
@@ -49,14 +52,14 @@ def get_life_events(age):
         if age <= 20:
             return 1
         if age <= 30:
-            return random.randint(1, 4)
+            return roll_d4(1)
         if age <= 40:
-            return random.randint(1, 6)
+            return roll_d6(1)
         if age <= 50:
-            return random.randint(1, 8)
+            return roll_d8(1)
         if age <= 60:
-            return random.randint(1, 10)
-        return random.randint(1, 12)
+            return roll_d10(1)
+        return roll_d12(1)
     events = []
     num_events = number_life_events(age)
     for _ in range(num_events):
@@ -69,15 +72,15 @@ def get_life_events(age):
 
 def weird_event():
     events = [
-        "You were turned into a toad for {} weeks".format(random.randint(1, 4)),
+        "You were turned into a toad for {} weeks".format(roll_d4(1)),
         "You were petrified and remained a strone statue for a time until someone freed you",
         "You were enslaved by a {} for {} years".format(random.choice(["hag", 
-            "satyr", "troll"]), random.randint(1, 6)),
-        "A dragon held you prisoner for {} months until adventurers killed it".format(random.randint(1, 4)),
+            "satyr", "troll"]), roll_d6(1)),
+        "A dragon held you prisoner for {} months until adventurers killed it".format(roll_d4(1)),
         "You were taken captive by a group of {} and lived as a slave in the underdark".format(
             random.choice(["drow", "kuo-toa", "quaggoths"])),
-        "You served a powerfuil adventurer as a hireling.",
-        "You went insane for {} years and recently regained your sanity.".format(random.randint(1, 4)),
+        "You served a powerful adventurer as a hireling.",
+        "You went insane for {} years and recently regained your sanity.".format(roll_d4(1)),
         "A lover of yours was secretly a silver dragon",
         "You were captuired by a cult and nearly sacrificed at the altar.  You escaped but fear they will find you",
         "You met a {} and lived to tell the tale".format(
@@ -87,6 +90,7 @@ def weird_event():
     ]
     return random.choice(events)
 
+
 def love_event():
     gender = random.choice(["man", "woman"])
 
@@ -95,14 +99,15 @@ def love_event():
     name = generate_name(race, gender)
 
     return "You fell in love with a {} named {} {} years ago".format(gender,
-        name, random.randint(1, 10))
+        name, roll_d10(1))
+
 
 def tragedy_event():
     events = [
     "A family member died from {}".format(random.choice(cause_of_death)),  
     "A friendship ended bitterly, and the person is now hostile towards you",
     "You lost all your possesions in a disaster and had to rebuild a new life",
-    "You were imprisoned for a crome you didn't commit and spent {} years in hard labor".format(random.randint(1, 6)),
+    "You were imprisoned for a crome you didn't commit and spent {} years in hard labor".format(roll_d6(1)),
     "War ravaged your home community, reducing your hometown to rubble.  You {}".format(
         random.choice(["helped rebuild", "moved somewhere else"])),
     "A lover disapeared without a trace, you have been looking for them ever since",
@@ -115,6 +120,7 @@ def tragedy_event():
     ]
     return random.choice(events)
 
+
 def enemy_event():
     dangerous = random.choice(["in danger", "not in danger"])
     blame = random.choice(["to blame", "not to blame"])
@@ -124,23 +130,25 @@ def enemy_event():
     name = generate_name(race, gender)
 
     event = "You made an enemy with {}, {} years ago.  You are {} for this.  Currently you are {}".format(
-        name, random.randint(1, 4),  blame, dangerous)
+        name, roll_d4(1),  blame, dangerous)
 
     return event
+
 
 def boons_event():
     events = [
         "A random wizard gave you a spell containing a cantrip",
         "You saved the life of a commoner who now owes you a life debt.  This individual accompanies you on your travels and performs mundane tasks for you.  He will leave if treated badly",
         "You found a horse",
-        "You found {} gold".format(random.randint(1, 20)),
+        "You found {} gold".format(roll_d20(1)),
         "A relative gave you a simple weapon of your choice",
         "You found a trinket",
         "A friendly alchemist gifted you either a vial of healing potion or acid",
         "You found a treasure map", 
-        "A distant relative dies and gives you enough money to life comfortable for {} years".format(random.randint(1, 20))
+        "A distant relative dies and gives you enough money to life comfortable for {} years".format(roll_d20(1))
     ] 
     return random.choice(events)
+
 
 def friend_event():
     """ Generate a random name and maybe some more details about this person
@@ -151,6 +159,7 @@ def friend_event():
 
     return "You made a friend earlier in life with {}".format(name)
 
+
 def job_event():
     jobs = [
         "merchant", "guard", "alchemist", "hunter", "lute center employee", 
@@ -160,17 +169,19 @@ def job_event():
     ]
     return "You used to work as a {}.  Start with 2 extra gold".format(random.choice(jobs))
 
+
 def important_person_event():
     important_people = [
         "Yanther the Bloodthirsty"
     ]
     return "You met an important person named {}".format(random.choice(important_people))
 
+
 def adventure_event():
     events = [
     "You nearly died.  You have nasty scars on your body and are missing {}".format(
-        random.choice(["{} fingers".format(random.randint(1, 3)),
-                       "{} toes".format(random.randint(1, 4))])),
+        random.choice(["{} fingers".format(roll_d4(1)),
+                       "{} toes".format(roll_d4(1))])),
     "You suffured a grievous injury,  Though it is healed it still pains you from time to time",
     "You were wounded, but in time you fully recovered",
     "You contracted a disease while exploring a filthy warren.  You recovered but have a persistent cough",
@@ -179,20 +190,21 @@ def adventure_event():
     "You were terribly frightened by something you encountered and ran away, abandoning your companions to their fate",
     "You leared a great deal during your adventures.  Next time you make an ability check, roll with advantage",
     "You found some treasure on your adventure, you have {} left".format(
-        random.randint(1, 12)),
-    "You found a massive ammount of treasure on your last adventure and still have {} gold".format(
-        random.randint(1, 20) + 50),
+        roll_d12(1)),
+    "You found a massive amount of treasure on your last adventure and still have {} gold".format(
+        roll_d20(1) + 50),
     "You obtained a common magic item"
 
 ] 
     return random.choice(events)
 
+
 def supernatural_event():
     events = [
-        "You were ensorcelled by a fey and enslaved for {} years before you escaped".format(random.randint(1, 6)),
+        "You were ensorcelled by a fey and enslaved for {} years before you escaped".format(roll_d6(1)),
         "You saw a demon and ran away before it could do anything to you",
         "A devil tempted you. Make a DC 10 wisdom saving throw.  On a failed save, your allignment shifts 1 towards evil and you start the game with an aditional {} gold".format(
-            random.randint(1, 20) + 50),
+            roll_d20(1) + 50),
         "You woke up one morning miles from your home with no idea how you got there",
         "You visited a holy site and felt the presence of the divine there",
         "You witnessed {} and are convinced that it was an omen of some sort.".format(
@@ -210,6 +222,7 @@ def supernatural_event():
     ] 
     return random.choice(events)
 
+
 def battle_event():
     events = [
         "You were knocked out and left for dead.  You woke up hours later with no recollection of battle",
@@ -222,6 +235,7 @@ def battle_event():
     ] 
     return random.choice(events)
 
+
 def crime_event():
     crimes = ["murder", "theft", "burglary", "assult", "smuggling", "kidnapping",
               "extortion", "counterfeiting"]
@@ -231,6 +245,7 @@ def crime_event():
 
     return "You {} {} and {}".format(random.choice(happened), 
         random.choice(crimes), random.choice(caught))
+
 
 def arcane_event():
     events = [

@@ -1,12 +1,12 @@
-class SpelNotFoundException(Exception):pass
+class SpellNotFoundException(Exception):pass
 
 class Spell:
-    def __init__(self, name, level, casting_time, range, components, duration, 
+    def __init__(self, name, level, casting_time, spell_range, components, duration,
                  aoe, effects):
         """ Name <str>:         name of spell
             Level <int>:        spell level
-            Casting time<str>:  how long to cast the spell
-            Range<int>:         Range of the spell
+            Casting time<str>:  how long to cast the spell in seconds
+            Range<int>:         Range of the spell in feet.
             Components<str>:    Components required for the spell, verbal,
                                 somatic, or material
             Duration<int>:      How long the spell lasts
@@ -17,7 +17,7 @@ class Spell:
         self.name = name
         self.level = level
         self.casting_time = casting_time
-        self.range = range
+        self.range = spell_range
         self.components = components
         self.duration = duration
         self.aoe = aoe
@@ -31,7 +31,8 @@ spells = {
 }
 
 def generate_spell(name, level):
-    """ Looks up a spell from the spells dictionary and creates it
+    """
+        Looks up a spell from the spells dictionary and creates it
     """
     if name in spells:
         return Spell(name, level, spells[name]['casting_time'], 

@@ -141,6 +141,27 @@ def roll_d8(count, total=True):
     return roll_die(count, 8, total=True)
 
 
+def roll_d10(count, total=True):
+    """
+        Generates a random number between 1 and 10.
+
+        Wrapper function.
+
+        Args:
+            count (:class: `int`):  How many random numbers to generate.
+
+        Kargs:
+            total (:class: `bool`):  If True, returns a single int as a total of
+                all generated numbers.  If False, generates numbers
+                individually.  Defaults to True.
+
+        Returns:
+            (:class: `int` or `list`):  Returns an int if total is True, returns
+                a list if total is False.
+    """
+    return roll_die(count, 10, total=True)
+
+
 def roll_d12(count, total=True):
     """
         Generates a random number between 1 and 12.
@@ -186,3 +207,20 @@ def roll_d20(count, advantage=False, disadvantage=False):
                     advantage=advantage,
                     disadvantage=disadvantage,
                     total=False)
+
+
+def roll_d100(count, total=True):
+    """
+        Generates a random number between 1 and 100.
+        Can also be used as a percentage die.
+
+        Wrapper function.
+
+        Args:
+            count (:class: `int`):  How many random numbers to generate.
+
+        Returns:
+            (:class: `int` or `list`):  Returns an int if total is True, returns
+                a list if total is False.
+    """
+    return roll_die(count, 100, total=total)

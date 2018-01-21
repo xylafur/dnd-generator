@@ -4,9 +4,9 @@
 from random_ext import roll_event
 from random import choice, randint
 
-from backstory_generator import cause_of_death, get_life_events
+from background_info.backstory_generator import cause_of_death, get_life_events
 from races import races
-from namer import generate_name
+from background_info.namer import generate_name
 
 absent_parents = ["None", "Institution, such as an asylum", "Temple", 
                  "Orphanage", "guardian", "aunt", "uncle", "aunt and uncle", 
@@ -16,6 +16,7 @@ childhood_home_modifiers = {
     'Wretched': -40, 'Squalid': -20, 'Poor': -10, 'Modest': 0, 
     'Comfortable': 10, 'Wealthy': 20, 'Aristocratic': 40
 }
+
 
 def generate_life_story(race=None, age=None, gender=None, name=None):
     if not gender:

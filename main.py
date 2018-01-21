@@ -6,7 +6,7 @@ def namer_util(args):
         print('Supported races: ' + str(races))
         return
 
-    from namer import generate_name
+    from background_info.namer import generate_name
     for n in range(args.num_names):
         print(generate_name(args.race, args.gender))
     pass
