@@ -53,7 +53,7 @@ def roll_die(count, die, advantage=False, disadvantage=False, total=True):
         raise InvalidArgumentsException("You cannot have advantage/disadvantage"
                                         " on a non-d20 roll.")
 
-    if die != 20 and total is not False:
+    if die == 20 and total is True:
         raise InvalidArgumentsException("You cannot total d20 rolls.")
 
     total_result = 0

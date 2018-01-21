@@ -1,21 +1,28 @@
 #!/usr/bin/env python3
+import argparse
+
+from os import sys
+
+from background_info.life_story import generate_life_story
+from background_info.namer import generate_name
+from races import races
+
 
 def namer_util(args):
     if args.list:
-        from races import races
         print('Supported races: ' + str(races))
         return
 
-    from background_info.namer import generate_name
     for n in range(args.num_names):
         print(generate_name(args.race, args.gender))
     pass
 
 
-import argparse
-if __name__ == '__main__':
-    from os import sys
+def chargen_util(args):
+    print(generate_life_story())
 
+
+if __name__ == '__main__':
     prognm = sys.argv[0]
 
     parser = argparse.ArgumentParser(prog=prognm,
@@ -39,18 +46,24 @@ if __name__ == '__main__':
     args, leftovers = parser.parse_known_args()
     print(args)
 
-    if len(sys.argv) == 1:
-        parser.print_usage()
+    if len(sys.argv) <= 1:
+        parser.print_help()
         parser.exit(1)
 
     # utility dictionary
     utils = {
-        'namer':namer_util
+        'namer': namer_util,
+        'chargen': chargen_util
     }
 
-    # call function
-    if args.which in utils:
-        utils[args.which](args)
+    try:
+        # call function
+        if args.which in utils:
+            utils[args.which](args)
+
+    except AttributeError:
+        parser.print_help()
+        sys.exit(1)
 
     pass
 
