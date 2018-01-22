@@ -7,6 +7,7 @@ from background_info.life_story import generate_life_story
 from background_info.namer import generate_name
 from info.races import races
 from lib.random_ext import dice_roll
+from random_encounter.random_encounter import generate_encounter 
 
 
 def namer_util(args):
@@ -25,6 +26,9 @@ def chargen_util(args):
 def dice_util(args):
     print(dice_roll(args.dice[0]))
 
+def encounter_util(args):
+    print(generate_encounter(args.die))
+    
 if __name__ == '__main__':
     prognm = sys.argv[0]
 
@@ -53,6 +57,15 @@ if __name__ == '__main__':
     dice_parser.add_argument('-n', '--number', action='store', type=int, 
                              default=1, help="number dice to roll")
 
+    #random encounter generator
+    encounter_parser = subparser.add_parser('encounter', 
+                                            help="random enccounter help")
+    encounter_parser.set_defaults(which='encounter')
+    encounter_parser.add_argument('die', metavar='D', type=int, nargs='+',
+                                  help='All of the values the players rolled '
+                                       'on a luck check')
+
+
     # fetch arguments
     args, leftovers = parser.parse_known_args()
     #print(args)
@@ -65,7 +78,8 @@ if __name__ == '__main__':
     utils = {
         'namer': namer_util,
         'chargen': chargen_util,
-        'diceroll': dice_util 
+        'diceroll': dice_util,
+        'encounter': encounter_util 
     }
 
     try:
