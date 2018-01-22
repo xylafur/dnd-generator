@@ -5,8 +5,8 @@ from os import sys
 
 from background_info.life_story import generate_life_story
 from background_info.namer import generate_name
-from races import races
-from random_ext import dice_roll
+from info.races import races
+from lib.random_ext import dice_roll
 
 
 def namer_util(args):
