@@ -3,32 +3,9 @@ import argparse
 
 from os import sys
 
-from background_info.life_story import generate_life_story
-from background_info.namer import generate_name
-from info.races import races
-from lib.random_ext import dice_roll
-from random_encounter.random_encounter import generate_encounter 
+from lib.parser_util import namer_util, chargen_util, dice_util, avg_util
 
 
-def namer_util(args):
-    if args.list:
-        print('Supported races: ' + str(races))
-        return
-
-    for n in range(args.num_names):
-        print(generate_name(args.race, args.gender))
-    pass
-
-
-def chargen_util(args):
-    print(generate_life_story())
-
-def dice_util(args):
-    print(dice_roll(args.dice[0]))
-
-def encounter_util(args):
-    print(generate_encounter(args.die))
-    
 if __name__ == '__main__':
     prognm = sys.argv[0]
 
@@ -65,6 +42,12 @@ if __name__ == '__main__':
                                   help='All of the values the players rolled '
                                        'on a luck check')
 
+    #module for averagin die
+    avg_parser = subparser.add_parser('avg', help='avg help')
+    avg_parser.set_defaults(which='avg')
+    avg_parser.add_argument('die', metavar='D', type=int, nargs='+', 
+                            help="give a list of die, will return the averate")
+
 
     # fetch arguments
     args, leftovers = parser.parse_known_args()
@@ -79,7 +62,8 @@ if __name__ == '__main__':
         'namer': namer_util,
         'chargen': chargen_util,
         'diceroll': dice_util,
-        'encounter': encounter_util 
+        'encounter': encounter_util,
+        'avg': avg_util 
     }
 
     try:
