@@ -3,7 +3,7 @@ import argparse
 
 from os import sys
 
-from parser_util import namer_util, chargen_util, dice_util, avg_util
+from lib.parser_util import namer_util, chargen_util, dice_util, avg_util
 
 
 if __name__ == '__main__':
