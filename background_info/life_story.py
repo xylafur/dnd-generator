@@ -17,11 +17,15 @@ childhood_home_modifiers = {
     'Comfortable': 10, 'Wealthy': 20, 'Aristocratic': 40
 }
 
+MALE = 1
+FEMALE = 0
+
 
 def generate_life_story(race=None, age=None, gender=None, name=None):
+    import pdb;pdb.set_trace()
+    gender_opt = 0
     if not gender:
-        gender = choice(["male", "female"])
-        gender_opt = 0 if "male" else 1
+        gender_opt = choice([MALE, FEMALE])
     if not race:
         race = choice(races)
     if not name:

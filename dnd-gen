@@ -3,27 +3,8 @@ import argparse
 
 from os import sys
 
-from background_info.life_story import generate_life_story
-from background_info.namer import generate_name
-from races import races
-from random_ext import dice_roll
+from util.char_gen_util import generate_character
 
-
-def namer_util(args):
-    if args.list:
-        print('Supported races: ' + str(races))
-        return
-
-    for n in range(args.num_names):
-        print(generate_name(args.race, args.gender))
-    pass
-
-
-def chargen_util(args):
-    print(generate_life_story())
-
-def dice_util(args):
-    print(dice_roll(args.dice[0]))
 
 if __name__ == '__main__':
     prognm = sys.argv[0]
@@ -45,7 +26,7 @@ if __name__ == '__main__':
     char_parser.set_defaults(which='chargen')
     char_parser.add_argument('-p', action='store', type=int, default=1)
 
-    #dice utility parser
+    # dice utility parser
     dice_parser = subparser.add_parser('diceroll', help='diceroll help')
     dice_parser.set_defaults(which='diceroll')
     dice_parser.add_argument('dice', metavar='D', type=int, nargs='+',
@@ -53,19 +34,32 @@ if __name__ == '__main__':
     dice_parser.add_argument('-n', '--number', action='store', type=int, 
                              default=1, help="number dice to roll")
 
+
+    # module for averagin die
+    avg_parser = subparser.add_parser('avg', help='avg help')
+    avg_parser.set_defaults(which='avg')
+    avg_parser.add_argument('die', metavar='D', type=int, nargs='+',
+                            help="give a list of die, will return the averate")
+
+    # stat parser
+    stat_parser = subparser.add_parser('stats', help='stat help')
+    stat_parser.set_defaults(which='avg')
+
     # fetch arguments
     args, leftovers = parser.parse_known_args()
-    #print(args)
+    # print(args)
 
     if len(sys.argv) <= 1:
         parser.print_help()
         parser.exit(1)
 
     # utility dictionary
+    # TODO: Commenting out this utils until they are implemented.
     utils = {
-        'namer': namer_util,
-        'chargen': chargen_util,
-        'diceroll': dice_util 
+        # 'namer': namer_util,
+        'chargen': generate_character,
+        # 'diceroll': dice_util,
+        # 'avg': avg_util,
     }
 
     try:
