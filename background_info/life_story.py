@@ -1,11 +1,11 @@
 """ This is a module to generate a random life backstory based on race 
 """
 
-from random_ext import roll_event
+from lib.random_ext import roll_event
 from random import choice, randint
 
 from background_info.backstory_generator import cause_of_death, get_life_events
-from races import races
+from info.races import races
 from background_info.namer import generate_name
 
 absent_parents = ["None", "Institution, such as an asylum", "Temple", 

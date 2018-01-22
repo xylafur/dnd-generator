@@ -3,7 +3,7 @@
 import random
 
 from lib.random_die import roll_d4, roll_d6, roll_d8, roll_d10, roll_d12, roll_d20, roll_d100
-from races import races
+from info.races import races
 from background_info.namer import generate_name
 
 
