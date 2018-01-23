@@ -48,7 +48,7 @@ def roll_die(die, count=1, adv=False, dis=False, total=True):
     else: # advantage and disadvantage cancel out in 5e
         ret = [ roll_d(die) for i in range(count) ]
 
-    return sum(ret) if (calc_sum or count==1) else ret
+    return sum(ret) if (total or count==1) else ret
 
 def roll_d4(count, total=True):
     """
