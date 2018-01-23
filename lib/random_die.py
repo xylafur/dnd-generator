@@ -1,8 +1,6 @@
 import random
 
-
-class InvalidRangeException(Exception): pass
-class InvalidArgumentsException(Exception): pass
+from lib.exceptions import InvalidRangeException, InvalidArgumentsException
 
 
 def roll_die(count, die, advantage=False, disadvantage=False, total=True):
@@ -31,8 +29,6 @@ def roll_die(count, die, advantage=False, disadvantage=False, total=True):
             (:class: `InvalidArgumentException`):  If the die is not a d20, and
                 advantage or disadvantage is True.
 
-                If a die is a d20 and total is True.
-
         Returns:
             (:class: `int` or `list`):  Returns an int if total is True, returns
                 a list if total is False.
@@ -53,13 +49,10 @@ def roll_die(count, die, advantage=False, disadvantage=False, total=True):
         raise InvalidArgumentsException("You cannot have advantage/disadvantage"
                                         " on a non-d20 roll.")
 
-    if die == 20 and total is True:
-        raise InvalidArgumentsException("You cannot total d20 rolls.")
-
     total_result = 0
     individual_result = []
 
-    for i in range(1, count):
+    for i in range(0, count):
         num = random.randint(1, die)
 
         if advantage is True:
@@ -69,6 +62,8 @@ def roll_die(count, die, advantage=False, disadvantage=False, total=True):
         elif disadvantage is True:
             num2 = random.randint(1, die)
             individual_result.append(min(num, num2))
+        else:
+            individual_result.append(num)
 
         total_result += num
 
@@ -183,7 +178,7 @@ def roll_d12(count, total=True):
     return roll_die(count, 12, total=total)
 
 
-def roll_d20(count, advantage=False, disadvantage=False):
+def roll_d20(count, advantage=False, disadvantage=False, total=False):
     """
         Generates a random number between 1 and 20.
 
@@ -199,6 +194,10 @@ def roll_d20(count, advantage=False, disadvantage=False):
             disadvantage (:class: `bool`):  If True, generates two numbers and
                 takes the smallest of the two.
 
+            total (:class: `bool`):  If True, returns a single int as a total of
+                all generated numbers.  If False, generates numbers
+                individually.  Defaults to True.
+
         Returns:
             (:class: `int` or `list`):  Returns an int if total is True, returns
                 a list if total is False.
@@ -206,7 +205,7 @@ def roll_d20(count, advantage=False, disadvantage=False):
     return roll_die(count, 20,
                     advantage=advantage,
                     disadvantage=disadvantage,
-                    total=False)
+                    total=total)
 
 
 def roll_d100(count, total=True):

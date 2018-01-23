@@ -3,7 +3,7 @@ import argparse
 
 from os import sys
 
-from lib.parser_util import namer_util, chargen_util, dice_util, avg_util
+from util.char_gen_util import generate_character
 
 
 if __name__ == '__main__':
@@ -26,7 +26,7 @@ if __name__ == '__main__':
     char_parser.set_defaults(which='chargen')
     char_parser.add_argument('-p', action='store', type=int, default=1)
 
-    #dice utility parser
+    # dice utility parser
     dice_parser = subparser.add_parser('diceroll', help='diceroll help')
     dice_parser.set_defaults(which='diceroll')
     dice_parser.add_argument('dice', metavar='D', type=int, nargs='+',
@@ -35,23 +35,26 @@ if __name__ == '__main__':
                              default=1, help="number dice to roll")
 
     #random encounter generator
-    encounter_parser = subparser.add_parser('encounter', 
+    encounter_parser = subparser.add_parser('encounter',
                                             help="random enccounter help")
     encounter_parser.set_defaults(which='encounter')
     encounter_parser.add_argument('die', metavar='D', type=int, nargs='+',
                                   help='All of the values the players rolled '
                                        'on a luck check')
 
-    #module for averagin die
+    # module for averaging die
     avg_parser = subparser.add_parser('avg', help='avg help')
     avg_parser.set_defaults(which='avg')
-    avg_parser.add_argument('die', metavar='D', type=int, nargs='+', 
+    avg_parser.add_argument('die', metavar='D', type=int, nargs='+',
                             help="give a list of die, will return the averate")
 
+    # stat parser
+    stat_parser = subparser.add_parser('stats', help='stat help')
+    stat_parser.set_defaults(which='avg')
 
     # fetch arguments
     args, leftovers = parser.parse_known_args()
-    #print(args)
+    # print(args)
 
     if len(sys.argv) <= 1:
         parser.print_help()
@@ -60,10 +63,10 @@ if __name__ == '__main__':
     # utility dictionary
     utils = {
         'namer': namer_util,
-        'chargen': chargen_util,
+        'chargen': generate_character,
         'diceroll': dice_util,
         'encounter': encounter_util,
-        'avg': avg_util 
+        'avg': avg_util,
     }
 
     try:

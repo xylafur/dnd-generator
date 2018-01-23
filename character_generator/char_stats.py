@@ -1,12 +1,12 @@
 
 from lib.random_die import roll_d20
 
-STAT_TYPES = {'strength': 0,
-              'constitution': 0,
-              'dexterity': 0,
-              'intelligence': 0,
-              'wisdom': 0,
-              'charisma': 0
+STAT_TYPES = {'Strength': 0,
+              'Constitution': 0,
+              'Dexterity': 0,
+              'Intelligence': 0,
+              'Wisdom': 0,
+              'Charisma': 0
               }
 
 STANDARD_SCORES = [8, 10, 12, 13, 14, 15]
@@ -24,7 +24,7 @@ def generate_stats_roll():
     gen_stats = []
     # Roll once extra for the number of stats to remove the lowest score later.
     for stat in range(0, len(STAT_TYPES.keys())+1):
-        gen_stats.append(roll_d20(1))
+        gen_stats.append(roll_d20(1, total=True))
 
     # Remove the lowest score.
     gen_stats.remove(min(gen_stats))
