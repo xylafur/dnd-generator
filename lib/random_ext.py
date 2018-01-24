@@ -8,6 +8,7 @@ class InvalidRangeException(Exception):pass
 class NoEventTriggeredException(Exception):pass
 
 
+
 def within_range(number, range):
     """ Returns true if the number is within the range supplied 
         The range should either be a tuple or a list of size 2

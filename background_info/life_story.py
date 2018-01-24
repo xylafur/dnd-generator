@@ -6,12 +6,12 @@ from info.races import races
 from lib.random_die import roll_event
 from background_info.namer import generate_name
 from background_info.backstory_generator import cause_of_death, get_life_events
-from backgroun_info.childhood import *
+from background_info.childhood import *
 
 MALE = 1
 FEMALE = 0
 
-def generate_character_backstore(race=None, age=None, gender=None, name=None):
+def generate_character_backstory(race=None, age=None, gender=None, name=None):
     gender_opt = 0
     if not gender:
         gender_opt = choice([MALE, FEMALE])

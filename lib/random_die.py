@@ -9,10 +9,10 @@ def roll_event(die_num, event_list, low=None, modifier=None):
     if low and die == 1: 
         die += low - 1
 
-    if plus:
-        die += plus
+    if modifier:
+        die += modifier 
     for event in event_list:
-        if die >= event[0] and die <= event[1]:
+        if die >= event[0][0] and die <= event[0][1]:
             return event[1]
     raise RandomException("no event in range for {}".format(die))
 

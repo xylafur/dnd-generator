@@ -1,6 +1,6 @@
 from lib.random_die import roll_event, roll_d100
 
-from background_generator.childhood_info import *
+from background_info.childhood_data import *
 
 def generate_birthplace():
     return roll_event(100, birthplaces)
@@ -41,7 +41,8 @@ def generate_childhood():
     childhood['parents'] = "You knew your parents" if \
             "Mother and Father" in childhood['who_raised'] else generate_parents() 
     childhood['class'] = generate_childhood_socioeconomic_status()
-    modifier = childhood_home_modifiers[childhood['who_raised']]
+
+    modifier = childhood_home_modifiers[childhood['class']]
     childhood['home'] = generate_childhood_home(modifier=modifier)
     childhood['memories'] = generate_childhood_memories(modifier=modifier)
 

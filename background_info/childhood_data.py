@@ -1,3 +1,7 @@
+from random import choice, randint
+
+from background_info.backstory_generator import cause_of_death
+
 absent_parents = ["None", "Institution, such as an asylum", "Temple", 
                  "Orphanage", "guardian", "aunt", "uncle", "aunt and uncle", 
                  "grandparents", "adoptive family"]
