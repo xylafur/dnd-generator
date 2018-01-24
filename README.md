@@ -3,6 +3,7 @@
 Utility for use by our D&D group during our campaign 
 
 Will eventually be able to 
+
     Generate a random character
     Generate a random encounter
     Generate a random magical item of a certain rarity
@@ -10,6 +11,7 @@ Will eventually be able to
 
 
 Things that would be super awesome to implement (but would be very difficult):
+
     Random dungeon generator
     Lore generator
     Map Generator

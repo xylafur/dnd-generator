@@ -3,7 +3,7 @@ import argparse
 
 from os import sys
 
-from util.char_gen_util import generate_character
+from util.parser_util import *
 
 
 if __name__ == '__main__':
@@ -70,7 +70,6 @@ if __name__ == '__main__':
     }
 
     try:
-        # call function
         if args.which in utils:
             utils[args.which](args)
 
@@ -78,7 +77,3 @@ if __name__ == '__main__':
         print("Error in parsing arguments")
         parser.print_help()
         sys.exit(1)
-
-    pass
-
-
