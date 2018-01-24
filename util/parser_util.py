@@ -1,11 +1,13 @@
 """ Module to hold all of the functions called by parsers
 """
-from background_info.life_story import generate_life_story
+from background_info.life_story import generate_character_backstory
 from background_info.namer import generate_name
 from info.races import races
 from lib.random_ext import dice_roll
-from lib.util import average_die
+from util.util import average_die
+from util.char_gen_util import generate_character
 
+generate_character = generate_character
 
 def namer_util(args):
     if args.list:

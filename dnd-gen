@@ -3,7 +3,7 @@ import argparse
 
 from os import sys
 
-from util.char_gen_util import generate_character
+from util.parser_util import *
 
 
 if __name__ == '__main__':
@@ -56,10 +56,10 @@ if __name__ == '__main__':
     # utility dictionary
     # TODO: Commenting out this utils until they are implemented.
     utils = {
-        # 'namer': namer_util,
+        'namer': namer_util,
         'chargen': generate_character,
-        # 'diceroll': dice_util,
-        # 'avg': avg_util,
+        'diceroll': dice_util,
+        'avg': avg_util,
     }
 
     try:
