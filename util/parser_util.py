@@ -6,6 +6,7 @@ from info.races import races
 from lib.random_ext import dice_roll
 from util.util import average_die
 from util.char_gen_util import generate_character
+from encounters.random_encounter import generate_encounter
 
 generate_character = generate_character
 
