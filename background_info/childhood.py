@@ -26,8 +26,8 @@ def generate_childhood_home(modifier=None):
 
 def generate_childhood_memories(modifier=None):
     if modifier == None: 
-        return roll_event(200, childhood_home, low=-100)
-    return roll_event(100, childhood_home, modifier=modifier)
+        return roll_event(200, childhood_memories, low=-100)
+    return roll_event(100, childhood_memories, modifier=modifier)
 
 def generate_parents(race):
     mother = None
