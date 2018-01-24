@@ -188,7 +188,7 @@ def roll_d20(count, advantage=False, disadvantage=False, total=False):
             (:class: `int` or `list`):  Returns an int if total is True, returns
                 a list if total is False.
     """
-    return roll_die(20, count, adv, dis, total)
+    return roll_die(20, count, advantage, disadvantage, total)
 
 def roll_d100(count, total=True):
     """

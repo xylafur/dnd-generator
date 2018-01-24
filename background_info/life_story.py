@@ -28,5 +28,5 @@ def generate_character_backstory(race=None, age=None, gender=None, name=None):
 
     return {
         'childhood': childhood, 'age': age, 'race': race, 'gender': gender, 
-        'name': name, 'life_events': live_events
+        'name': name, 'life_events': life_events
     }

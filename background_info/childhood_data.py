@@ -6,12 +6,6 @@ absent_parents = ["None", "Institution, such as an asylum", "Temple",
                  "Orphanage", "guardian", "aunt", "uncle", "aunt and uncle", 
                  "grandparents", "adoptive family"]
 
-childhood_home_modifiers = {
-    'Wretched': -40, 'Squalid': -20, 'Poor': -10, 'Modest': 0, 
-    'Comfortable': 10, 'Wealthy': 20, 'Aristocratic': 40
-}
-
-
 birthplaces = [
      ((1, 50),"Home"), ((51, 55), "Home of family friend"),
      ((56, 63),"Home of a {}".format(choice(["midwife", "healer"]))),
@@ -71,6 +65,11 @@ family_lifestyle = [
         ((16, 17), "Wealthy"),
         ((18, 18), "Aristocratic"),
     ]
+
+childhood_home_modifiers = {
+    'Wretched': -40, 'Squalid': -20, 'Poor': -10, 'Modest': 0, 
+    'Comfortable': 10, 'Wealthy': 20, 'Aristocratic': 40
+}
 
 childhood_home = [
      ((-100, 0), "On the streets"),
