@@ -1,77 +1,54 @@
-import random
-
-from lib.exceptions import InvalidRangeException, InvalidArgumentsException
 
 
-def roll_die(count, die, advantage=False, disadvantage=False, total=True):
+from random import randint as r
+
+def roll_event(die_num, event_list):
+    # TO-DO, why wasnt this implemented yet? It is called in life_story.py
+    raise NotImplementedError('This function not yet implemented')
+
+
+# roll functions
+roll_d      = lambda n:r(1,n)   # roll a dice : [1,n]
+roll_d0     = lambda n:r(0,n-1) # roll a dice : [0,n-1]
+roll_d_adv  = lambda n:max(roll_d(n), roll_d(n))   # roll a dice with adv
+roll_d0_adv = lambda n:max(roll_d0(n), roll_d0(n)) # roll a 0dice with adv
+roll_d_dis  = lambda n:min(roll_d(n), roll_d(n)) # roll a dice with dis
+roll_d0_dis = lambda n:min(roll_d(n), roll_d(n)) # roll a 0dice with dis
+
+def roll_die(die, count=1, adv=False, dis=False, total=True):
     """
-        Generates a random number between 1 and die value.
+        Generates a random number between 1 and die value
 
         Args:
-             count (:class: `int`):  The upper bound of the random range.
-             die (:class: `int`):  How many random numbers to generate.
-
+            die (:class: `int`) Upper bound of die rolls
         Kargs:
-            advantage (:class: `bool`):  If True, generates two numbers and
-                takes the largest of the two.
+            count (:class: `int`) Number of dice rolls, default=1, if count==1
+                returns a int instead of list
 
-            disadvantage (:class: `bool`):  If True, generates two numbers and
+            adv (:class: `bool`):  If true, takes max of 2 rolls
+
+            dis (:class: `bool`):  If True, generates two numbers and
                 takes the smallest of the two.
 
-            total (:class: `bool`):  If True, returns a single int as a total of
-                all generated numbers.  If False, generates numbers
-                individually.  Defaults to True.
-
-        Raises:
-            (:class: `InvalidRangeException`):  If the range is less than 4.
-                If the count is less than or equal to 0.
-
-            (:class: `InvalidArgumentException`):  If the die is not a d20, and
-                advantage or disadvantage is True.
+            total (:class: `bool`):  If True, returns int sum of generated
+                numbers. If False, returns list of length @count, of rolls
 
         Returns:
-            (:class: `int` or `list`):  Returns an int if total is True, returns
-                a list if total is False.
+            int or list, see total parameter, if 
     """
-    # Sanity check the arguments.
-    if count <= 0:
-        raise InvalidRangeException("Must provide a count greater than 0.")
+    assert(die > 0)
+    assert(count >= 1)
 
-    if die <= 3:
-        raise InvalidRangeException("Must provide a range greater than 3.")
+    if adv != dis:
+        if adv: # advantage
+            ret = [roll_d_adv(die) for i in range(count)]
+        else:   # dis
+            ret = [roll_d_dis(die) for i in range(count)]
 
-    # Having advantage and disadvantage cancel each other out.
-    if advantage and disadvantage:
-        advantage = False
-        disadvantage = False
+    else: # advantage and disadvantage cancel out in 5e
+        ret = [ roll_d(die) for i in range(count) ]
 
-    if (advantage or disadvantage) and die != 20:
-        raise InvalidArgumentsException("You cannot have advantage/disadvantage"
-                                        " on a non-d20 roll.")
-
-    total_result = 0
-    individual_result = []
-
-    for i in range(0, count):
-        num = random.randint(1, die)
-
-        if advantage is True:
-            num2 = random.randint(1, die)
-            individual_result.append(max(num, num2))
-
-        elif disadvantage is True:
-            num2 = random.randint(1, die)
-            individual_result.append(min(num, num2))
-        else:
-            individual_result.append(num)
-
-        total_result += num
-
-    if total:
-        return total_result
-    else:
-        return individual_result
-
+    return sum(ret) if (total or count==1) else ret
 
 def roll_d4(count, total=True):
     """
@@ -91,7 +68,7 @@ def roll_d4(count, total=True):
             (:class: `int` or `list`):  Returns an int if total is True, returns
                 a list if total is False.
     """
-    return roll_die(count, 4, total=total)
+    return roll_die(4, count=count, total=total)
 
 
 def roll_d6(count, total=True):
@@ -112,7 +89,7 @@ def roll_d6(count, total=True):
             (:class: `int` or `list`):  Returns an int if total is True, returns
                 a list if total is False.
     """
-    return roll_die(count, 6, total=total)
+    return roll_die(6, count=count, total=total)
 
 
 def roll_d8(count, total=True):
@@ -133,7 +110,7 @@ def roll_d8(count, total=True):
             (:class: `int` or `list`):  Returns an int if total is True, returns
                 a list if total is False.
     """
-    return roll_die(count, 8, total=True)
+    return roll_die(8, count=count, total=True)
 
 
 def roll_d10(count, total=True):
@@ -154,7 +131,7 @@ def roll_d10(count, total=True):
             (:class: `int` or `list`):  Returns an int if total is True, returns
                 a list if total is False.
     """
-    return roll_die(count, 10, total=True)
+    return roll_die(10, count=count, total=True)
 
 
 def roll_d12(count, total=True):
@@ -202,11 +179,7 @@ def roll_d20(count, advantage=False, disadvantage=False, total=False):
             (:class: `int` or `list`):  Returns an int if total is True, returns
                 a list if total is False.
     """
-    return roll_die(count, 20,
-                    advantage=advantage,
-                    disadvantage=disadvantage,
-                    total=total)
-
+    return roll_die(20, count, adv, dis, total)
 
 def roll_d100(count, total=True):
     """
@@ -222,4 +195,4 @@ def roll_d100(count, total=True):
             (:class: `int` or `list`):  Returns an int if total is True, returns
                 a list if total is False.
     """
-    return roll_die(count, 100, total=total)
+    return roll_die(100, count=count, total=total)

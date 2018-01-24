@@ -1,7 +1,7 @@
 """ This is a module to generate a random life backstory based on race 
 """
 
-from lib.random_ext import roll_event
+from lib.random_die import roll_event
 from random import choice, randint
 
 from background_info.backstory_generator import cause_of_death, get_life_events
