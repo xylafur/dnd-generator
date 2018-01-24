@@ -6,17 +6,22 @@ absent_parents = ["None", "Institution, such as an asylum", "Temple",
                  "Orphanage", "guardian", "aunt", "uncle", "aunt and uncle", 
                  "grandparents", "adoptive family"]
 
+#you were born in
 birthplaces = [
-     ((1, 50),"Home"), ((51, 55), "Home of family friend"),
-     ((56, 63),"Home of a {}".format(choice(["midwife", "healer"]))),
-     ((64, 65),"{}".format(choice(["carriage", "cart", "wagon"]))),
-     ((66, 68),"{}".format(choice(["barn", "shed", "outhouse"]))), 
-     ((69, 70),"cave"), ((71, 72),"field"), ((73, 74),"forest"),
-     ((75, 77),"temple"), ((78, 78),"battlefield"),
-     ((79, 80),"{}".format(choice(["street", "alley"]))),
-     ((81, 82),"{}".format(choice(["brothel", "tavern", "inn"]))),
-     ((83, 84),"{}".format(choice(["castle", "keep", "tower", "palace"]))),
-     ((85, 85),"sewer"),
+     ((1, 50),"a home"), 
+     ((51, 55), "the home of family friend"),
+     ((56, 63),"the home of a {}".format(choice(["midwife", "healer"]))),
+     ((64, 65),"a {}".format(choice(["carriage", "cart", "wagon"]))),
+     ((66, 68),"a {}".format(choice(["barn", "shed", "outhouse"]))), 
+     ((69, 70),"a cave"), 
+     ((71, 72),"a field"), 
+     ((73, 74),"a forest"),
+     ((75, 77),"a temple"), 
+     ((78, 78),"a battlefield"),
+     ((79, 80),"a {}".format(choice(["street", "alley"]))),
+     ((81, 82),"a {}".format(choice(["brothel", "tavern", "inn"]))),
+     ((83, 84),"a {}".format(choice(["castle", "keep", "tower", "palace"]))),
+     ((85, 85),"a sewer"),
      ((86, 88),"among people of a different race"),
      ((89, 91),"onboard a boat or a ship"),
      ((92, 93),"in a {}".format(choice(["prison", "headquarters of a secret organization"]))),
@@ -26,6 +31,8 @@ birthplaces = [
      ((99, 99),"in an inner plane of your choice"),
      ((100, 100),"in an outer plane of your choice")
     ]
+
+#rthe number of siblings you had was
 number_siblings = [
      ((1, 2), 0),
      ((3, 4), randint(1, 3)),
@@ -34,26 +41,26 @@ number_siblings = [
      ((9, 10), randint(1, 8) + 3),
     ]
 
-#this is actually more how you grew up, as far as how you were raised
+#you were raised by
 family = [
-     ((1, 1), "None"),     
-     ((2, 2), "Institution, such as an asylum"),     
-     ((3, 3), "Temple"),     
-     ((4, 5), "Orphanage"),     
-     ((6, 7), "Guardian"),     
-     ((8, 15), "{}".format(choice(["aunt", "uncle", "aunt and uncle", "tribe", "clan"]))),     
+     ((1, 1), "no one, you had to raise yourself."),     
+     ((2, 2), "an Institution, such as an asylum"),     
+     ((3, 3), "individuals in a Temple"),     
+     ((4, 5), "an Orphanage"),     
+     ((6, 7), "a Guardian"),     
+     ((8, 15), "a {}".format(choice(["aunt", "uncle", "aunt and uncle", "tribe", "clan"]))),     
      ((16, 25), "Grandparents"),     
-     ((26, 35), "Adoptive family"),     
-     ((36, 55), "Single father"),     
-     ((56, 75), "Single mother"),     
-     ((76, 100), "Mother and Father"),     
+     ((26, 35), "an Adoptive family"),     
+     ((36, 55), "a Single father"),     
+     ((56, 75), "a Single mother"),     
+     ((76, 100), "both Mother and Father"),     
     ]
-    
+
 reason_absent = [
-         ((1, 1), "Your parent died from {}".format(choice(cause_of_death))),
-         ((2, 2), "Your parent was {}".format(choice(["imprisoned", "enslaved"]))),
-         ((3, 3), "Your parent abandoned you"),
-         ((4, 4), "Your parent disapeared to an unknown fate"),
+         ((1, 1), "parent died from {}".format(choice(cause_of_death))),
+         ((2, 2), "parent was {}".format(choice(["imprisoned", "enslaved"]))),
+         ((3, 3), "parent abandoned you"),
+         ((4, 4), "parent disapeared to an unknown fate"),
     ]
 
 family_lifestyle = [
@@ -71,28 +78,29 @@ childhood_home_modifiers = {
     'Comfortable': 10, 'Wealthy': 20, 'Aristocratic': 40
 }
 
+#You grew up in
 childhood_home = [
-     ((-100, 0), "On the streets"),
-     ((1, 20), "Rundown Shack"),
-     ((21, 30), "No permenant residence, alot of moving"),
-     ((31, 40), "{}".format(choice(["Encampment", "Village in wilderness"]))),
-     ((41, 50), "Apartment in rundown neighborhood"),
-     ((51, 70), "Small House"),
-     ((71, 90), "Large House"),
-     ((91, 110), "Mansion"),
-     ((111, 200), "{}".format(choice(["Palace", "Castle"]))),
+     ((-100, 0), "the streets"),
+     ((1, 20), "a rundown shack"),
+     ((21, 30), "no permenant residence, alot of moving"),
+     ((31, 40), "a {}".format(choice(["Encampment", "Village in wilderness"]))),
+     ((41, 50), "an Apartment in rundown neighborhood"),
+     ((51, 70), "a Small House"),
+     ((71, 90), "a Large House"),
+     ((91, 110), "a Mansion"),
+     ((111, 200), "a {}".format(choice(["Palace", "Castle"]))),
     ]
 
 childhood_memories = [
-     ((-100, 3), "I am still haunted by my childhood"),
-     ((4, 5), "I spent most of my childhood alone with no close friends"),
+     ((-100, 3), "still haunted by childhood"),
+     ((4, 5), "spent most of childhood alone with no close friends"),
      ((6, 8), "Others saw me as being different or strange, and so I had few companions"),
-     ((9, 12), "I had a few close friends and lived an ordinary childhood"),
-     ((13, 15), "I had several friends and my chidhood was generally a happy one"),
-     ((16, 17), "I always found it easy to make friends and Iloved being around people"),
-     ((18, 100), "Everyone knew who I was, and I had friends everywhere I went"),
+     ((9, 12), "a few close friends and lived an ordinary childhood"),
+     ((13, 15), "had several friends and childhood was generally a happy one"),
+     ((16, 17), "always found it easy to make friends and loved being around people"),
+     ((18, 100), "Everyone knew who I was, and had friends everywhere I went"),
     ]
 
-parents = [((1, 95), "You know who your parents are"),
-           ((95, 100), "You don't know who your parents are")]
+parents = [((1, 95), "know parents"),
+           ((95, 100), "don't know parents")]
 

@@ -23,7 +23,7 @@ def generate_character_backstory(race=None, age=None, gender=None, name=None):
         age = randint(20, 100)
     
     #there is a personal decisions section that can be implemented later.. alot of work
-    childhood = generate_childhood()
+    childhood = generate_childhood(race)
     life_events = get_life_events(age)
 
     return {
