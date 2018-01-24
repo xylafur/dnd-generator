@@ -1,11 +1,20 @@
-
-
 from random import randint as r
 
-def roll_event(die_num, event_list):
-    # TO-DO, why wasnt this implemented yet? It is called in life_story.py
-    raise NotImplementedError('This function not yet implemented')
 
+class RandomException(Exception):pass
+def roll_event(die_num, event_list, low=None, modifier=None):
+    die = roll_die(die_num) 
+    #we roll to highest with this param
+    #that being said its dangerous to pass in modifier and low
+    if low and die == 1: 
+        die += low - 1
+
+    if plus:
+        die += plus
+    for event in event_list:
+        if die >= event[0] and die <= event[1]:
+            return event[1]
+    raise RandomException("no event in range for {}".format(die))
 
 # roll functions
 roll_d      = lambda n:r(1,n)   # roll a dice : [1,n]
