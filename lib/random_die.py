@@ -3,14 +3,14 @@ from random import randint as r
 
 class RandomException(Exception):pass
 def roll_event(die_num, event_list, low=None, modifier=None):
-    die = roll_die(die_num) 
+    die = roll_die(die_num)
     #we roll to highest with this param
     #that being said its dangerous to pass in modifier and low
-    if low and die == 1: 
+    if low and die == 1:
         die += low - 1
 
     if modifier:
-        die += modifier 
+        die += modifier
     for event in event_list:
         if die >= event[0][0] and die <= event[0][1]:
             return event[1]
