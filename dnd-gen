@@ -3,10 +3,15 @@ import argparse
 
 from os import sys
 
-from util.parser_util import *
+from util.parser_util import parser_util
+from interactive.dnd_gen_shell import run_interactive
 
 
 if __name__ == '__main__':
+    if len(sys.argv) == 1:
+        run_interactive()
+        exit(0)
+
     prognm = sys.argv[0]
 
     parser = argparse.ArgumentParser(prog=prognm,
