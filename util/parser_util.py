@@ -1,6 +1,8 @@
 """ Module to hold all of the functions called by parsers, also has a utility 
     that calls them
 """
+import argparse
+from os import sys
 from background_info.life_story import generate_character_backstory
 from background_info.namer import generate_name
 from info.races import races
@@ -9,11 +11,51 @@ from util.util import average_die
 from util.char_gen_util import generate_character
 
 
-
 #imported from an external file
 generate_character = generate_character
 
+def get_parser():
+    prognm = sys.argv[0]
+    parser = argparse.ArgumentParser(prog=prognm,
+                                     description=prognm+' is a DnD toolkit')
+    subparser = parser.add_subparsers(help='sub command help')
+
+    # sub argument parser for namer utility
+    namer_parser = subparser.add_parser('namer', help='namer help')
+    namer_parser.set_defaults(which='namer')
+    namer_parser.add_argument('-l', '--list', action='store_true', help='list supported races')
+    namer_parser.add_argument('-n', '--num_names', action='store', type=int, default=1, help='number of names to generate')
+    namer_parser.add_argument('-r', '--race', action='store', type=str, default='elf', help='race of names to generate, default=elf')
+    namer_parser.add_argument('-g', '--gender', action='store', type=int, default=0, help='gender of names to generate, 0 being male, 1 being female')
+
+    # sub arugment parser for char gen
+    char_parser = subparser.add_parser('chargen', help='namer help')
+    char_parser.set_defaults(which='chargen')
+    char_parser.add_argument('-p', action='store', type=int, default=1)
+
+    # dice utility parser
+    dice_parser = subparser.add_parser('diceroll', help='diceroll help')
+    dice_parser.set_defaults(which='diceroll')
+    dice_parser.add_argument('dice', metavar='D', type=int, nargs='+',
+                    help='Highest number on the die you want to roll')
+    dice_parser.add_argument('-n', '--number', action='store', type=int, 
+                             default=1, help="number dice to roll")
+
+
+    # module for averagin die
+    avg_parser = subparser.add_parser('avg', help='avg help')
+    avg_parser.set_defaults(which='avg')
+    avg_parser.add_argument('die', metavar='D', type=int, nargs='+',
+                            help="give a list of die, will return the averate")
+
+    # stat parser
+    stat_parser = subparser.add_parser('stats', help='stat help')
+    stat_parser.set_defaults(which='avg')
+
+    return parser
+
 def namer_util(args):
+    print(args)
     if args.list:
         print('Supported races: ' + str(races))
         return
