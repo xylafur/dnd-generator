@@ -55,17 +55,9 @@ if __name__ == '__main__':
 
     # utility dictionary
     # TODO: Commenting out this utils until they are implemented.
-    utils = {
-        'namer': namer_util,
-        'chargen': generate_character,
-        'diceroll': dice_util,
-        'avg': avg_util,
-    }
-
+    
     try:
-        # call function
-        if args.which in utils:
-            utils[args.which](args)
+        parser_util(args.which, args)
 
     except AttributeError:
         print("Error in parsing arguments")
