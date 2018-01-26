@@ -14,10 +14,10 @@ from util.char_gen_util import generate_character
 #imported from an external file
 generate_character = generate_character
 
-def get_parser():
-    prognm = sys.argv[0]
-    parser = argparse.ArgumentParser(prog=prognm,
-                                     description=prognm+' is a DnD toolkit')
+def get_parser(program=sys.argv[0]):
+    program = sys.argv[0]
+    parser = argparse.ArgumentParser(prog=program,
+                                     description=program+' is a DnD toolkit')
     subparser = parser.add_subparsers(help='sub command help')
 
     # sub argument parser for namer utility
@@ -55,7 +55,6 @@ def get_parser():
     return parser
 
 def namer_util(args):
-    print(args)
     if args.list:
         print('Supported races: ' + str(races))
         return
