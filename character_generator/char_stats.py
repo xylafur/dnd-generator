@@ -11,6 +11,27 @@ STAT_TYPES = {'Strength': 0,
 
 STANDARD_SCORES = [8, 10, 12, 13, 14, 15]
 
+PROFICIENCY = {1: 2,
+               2: 2,
+               3: 2,
+               4: 2,
+               5: 3,
+               6: 3,
+               7: 3,
+               8: 3,
+               9: 4,
+               10: 4,
+               11: 4,
+               12: 4,
+               13: 5,
+               14: 5,
+               15: 5,
+               16: 5,
+               17: 6,
+               18: 6,
+               19: 6,
+               20: 6
+               }
 
 def generate_stats_roll():
     """
@@ -99,3 +120,16 @@ def calculate_base_AC(stats):
              (:class: `int`):  The base AC minus equipment modifiers.
     """
     return calculate_stat_mod(stats)['Dexterity'] + 10
+
+
+def get_proficiency_mod(level):
+    """
+        Gets the proficiency bonus for a specific level.
+
+        Args:
+            level (:class: `int`):  The level of the npc or character.
+
+        Returns:
+            (:class: `int`):  The proficiency bonus.
+    """
+    return PROFICIENCY[level]
