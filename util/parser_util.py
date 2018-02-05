@@ -14,43 +14,127 @@ from util.char_gen_util import generate_character
 #imported from an external file
 generate_character = generate_character
 
+#we can add a config file that can create this dict at runtime from file
+parsers = {
+    'namer': {
+        'parser': {
+            'args': ['namer'],
+            'kwds': {
+                'help':'namer help'
+            }
+        },
+        'defaults':{
+            'args': [],
+            'kwds': {
+                'which': 'namer'
+            }
+        },
+        'arguments': [
+            {
+                'args': ['-l', '--list'],
+                'kwds': {'action':'store_true', 'help': 'list supported races'}
+            },
+            {
+                'args': ['-n', '--num_names'],
+                'kwds': {'action': 'store', 'type': int, 'default': 1, 
+                         'help': 'number of names to generate'}
+            },
+            {
+                'args': ['-r', '--race'],
+                'kwds': {'action': 'store', 'type': str, 'default': 'elf', 
+                         'help': 'race of names to generate, default=elf'}
+            },
+              {
+                'args': ['-g', '--gender'],
+                'kwds': {'action': 'store', 'type': int, 'default': 0, 
+                         'help': 'gender of names to generate, 0 '
+                                  'being male, 1 being female'}
+            },
+     ]
+    },
+    'chargen': {
+        'parser': {
+            'args': ['chargen'],
+            'kwds': {'help': 'chargen help'}
+        },
+        'defaults':{
+            'args': [],
+            'kwds': {'which': 'chargen'}
+        },
+        'arguments': [
+            {
+                'args': ['-p'],
+                'kwds': {'action': 'store', 'type': int, 'default': 1}
+            },
+     ]
+    },
+    'diceroll': {
+        'parser': {
+            'args': ['diceroll'],
+            'kwds': {'help': 'diceroll help'}
+        },
+        'defaults':{
+            'args': [],
+            'kwds': {'which': 'diceroll'}
+        },
+        'arguments': [
+            {
+                'args': ['dice'],
+                'kwds': {'metavar': 'D', 'type': int, 'nargs': '+', 
+                         'help': 'Highest number on the die you want to roll'}
+            },
+            {
+                'args': ['-n', '--number'],
+                'kwds': {'action': 'store', 'type': int, 'default': 1, 
+                         'help': "number dice to roll"}
+            },
+
+     ]
+    },
+    'avg': {
+        'parser': {
+            'args': ['avg'],
+            'kwds': {'help': 'avg help'}
+        },
+        'defaults':{
+            'args': [],
+            'kwds': {'which': 'avg'}
+        },
+        'arguments': [
+            {
+                'args': ['die'],
+                'kwds': {'metavar': 'D', 'type': int, 'nargs': '+', 
+                         'help': 'give a list of die, will return the average'}
+            },
+     ]
+    },
+#    'stats': {
+#        'parser': {
+#            'args': ['stats'],
+#            'kwds': {'help': 'stat help'}
+#        },
+#        'defaults':{
+#            'args': [],
+#            'kwds': {'which': 'stat'}
+#        },
+#        'arguments': []
+#    },
+}
+
 def get_parser(program=sys.argv[0]):
     program = sys.argv[0]
     parser = argparse.ArgumentParser(prog=program,
                                      description=program+' is a DnD toolkit')
     subparser = parser.add_subparsers(help='sub command help')
 
-    # sub argument parser for namer utility
-    namer_parser = subparser.add_parser('namer', help='namer help')
-    namer_parser.set_defaults(which='namer')
-    namer_parser.add_argument('-l', '--list', action='store_true', help='list supported races')
-    namer_parser.add_argument('-n', '--num_names', action='store', type=int, default=1, help='number of names to generate')
-    namer_parser.add_argument('-r', '--race', action='store', type=str, default='elf', help='race of names to generate, default=elf')
-    namer_parser.add_argument('-g', '--gender', action='store', type=int, default=0, help='gender of names to generate, 0 being male, 1 being female')
-
-    # sub arugment parser for char gen
-    char_parser = subparser.add_parser('chargen', help='namer help')
-    char_parser.set_defaults(which='chargen')
-    char_parser.add_argument('-p', action='store', type=int, default=1)
-
-    # dice utility parser
-    dice_parser = subparser.add_parser('diceroll', help='diceroll help')
-    dice_parser.set_defaults(which='diceroll')
-    dice_parser.add_argument('dice', metavar='D', type=int, nargs='+',
-                    help='Highest number on the die you want to roll')
-    dice_parser.add_argument('-n', '--number', action='store', type=int, 
-                             default=1, help="number dice to roll")
-
-
-    # module for averagin die
-    avg_parser = subparser.add_parser('avg', help='avg help')
-    avg_parser.set_defaults(which='avg')
-    avg_parser.add_argument('die', metavar='D', type=int, nargs='+',
-                            help="give a list of die, will return the averate")
-
-    # stat parser
-    stat_parser = subparser.add_parser('stats', help='stat help')
-    stat_parser.set_defaults(which='avg')
+    for par in parsers:
+        par = parsers[par]
+        temp_parser = subparser.add_parser(*par['parser']['args'], 
+                                           **par['parser']['kwds'])
+        temp_parser.set_defaults(*par['defaults']['args'], 
+                                 **par['defaults']['kwds'])
+        for argument in par['arguments']:
+            temp_parser.add_argument(*argument['args'], **argument['kwds'])
 
     return parser
 
