@@ -3,16 +3,27 @@
 """
 import argparse
 from os import sys
+from random import randint
+
+from character_generator.char_stats import generate_stats_roll, calculate_stat_mod, calculate_base_AC, calculate_max_hp
+from info.races import choose_random_race
 from background_info.life_story import generate_character_backstory
 from background_info.namer import generate_name
 from info.races import races
 from lib.random_ext import dice_roll
 from util.util import average_die
-from util.char_gen_util import generate_character
 
-
-#imported from an external file
-generate_character = generate_character
+# Function mapping of specific parts of the NPC.
+# TODO: Redo with class based inheritance on the stats.  This is clunky.
+CHARACTER = {'Name': '',
+             'Gender': '',
+             'Race': '',
+             'Background': '',
+             'Stats': '',
+             'Stat Modifier': '',
+             'Base AC': '',
+             'Maximum HP': '',
+            }
 
 #we can add a config file that can create this dict at runtime from file
 parsers = {
@@ -144,35 +155,59 @@ def get_parser(program=sys.argv[0]):
     return parser
 
 def namer_util(args):
+    
     if args.list:
-        print('Supported races: ' + str(races))
-        return
-
+        return 'Supported races: ' + str(races)
+    result = []
     for n in range(args.num_names):
-        print(generate_name(args.race, args.gender))
-
+        result.append(generate_name(args.race, args.gender))
 
 def chargen_util(args):
-    print(generate_life_story())
+    return generate_life_story()
 
 def dice_util(args):
-    print(dice_roll(args.dice[0]))
+    return dice_roll(args.dice[0])
 
 def avg_util(args):
-    print(average_die(args.die))
+    return average_die(args.die)
 
 def encounter_util(args):
-    print(generate_encounter(args.die))
+    return generate_encounter(args.die)
+
+def chargen_util(*args, **kwds):
+    gender = randint(0, 1)
+    CHARACTER['Race'] = choose_random_race()
+    CHARACTER['Gender'] = 'Male' if gender else 'Female'
+    CHARACTER['Name'] = generate_name(CHARACTER['Race'], gender)
+    CHARACTER['Background'] = generate_character_backstory()
+    CHARACTER['Stats'] = generate_stats_roll()
+    CHARACTER['Stat Modifier'] = calculate_stat_mod(CHARACTER['Stats'])
+    CHARACTER['Base AC'] = calculate_base_AC(CHARACTER['Stats'])
+
+    # TODO: To be better determined base on a class, for now hardcoding.
+    CHARACTER['Maximum HP'] = calculate_max_hp(CHARACTER['Stats'], 8, 4)
+
+    result = []
+    for key in CHARACTER:
+        # Generate and print all the stats.
+        result.append("{}: {}".format(key, CHARACTER[key]))
+    return result
 
 utils = {
         'namer': namer_util,
-        'chargen': generate_character,
+        'chargen': chargen_util,
         'diceroll': dice_util,
-        'avg': avg_util,
+        'avg': avg_util
     }
 
-def parser_util(util, args):
+def parser_util(who, util, args):
     """ function that calls all other util funcitons, either from the command
         line or from the interactive shell
     """
-    utils[util](args)
+    result = utils[util](args)
+    if who == 'shell':
+        return result
+    if not isinstance(result, list):
+        result = [result] 
+    for line in result:
+        print(line)

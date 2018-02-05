@@ -18,7 +18,7 @@ if __name__ == '__main__':
         parser.exit(1)
 
     try:
-        parser_util(args.which, args)
+        parser_util('cli', args.which, args)
 
     except AttributeError:
         print("Error in parsing arguments")

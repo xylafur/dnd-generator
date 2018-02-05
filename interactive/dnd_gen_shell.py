@@ -58,13 +58,41 @@ def get_command(lineno):
 def check_command(command, commands=FUNCTIONS):
     return command in commands
 
-def run_command(command):
+def display_result(result, lineno):
+    alter = 0
+    for line in result:
+        move_cursor(0, lineno + alter)
+        print(line)
+        alter += 1
+    return alter
+
+def run_command(command, lineno):
     if isinstance(command, str):
         command = command.split()
     parser = get_parser(program=command[0])
     args = parser.parse_args(command)
-    parser_util(args.which, args)
+    result = parser_util('shell', args.which, args)
+    print("result: " + result)
+    return lineno + display_result(result)
 
+def handle_command(command, lineno):
+        if command == "quit":
+            return -1
+        if len(command) <= 0:
+            return lineno
+        if not check_command(command.split()[0]):
+            print("INVALID COMMAND")
+            return lineno
+        else:
+            try:
+                if command in custom_commands.keys():
+                    print("cust command")
+                    custom_commands[command]()
+                    return get_new_lineno(lineno, command)
+                else:
+                    return run_command(command, lineno)
+            except:
+                pass
 
 def run_interactive():
     global old_term; global height; global width
@@ -82,21 +110,10 @@ def run_interactive():
         command = get_command(lineno)
         lineno += 1
         move_cursor(0, lineno)
-        if command == "quit":
+        
+        result = handle_command(command, lineno)
+        if result == -1:
             break
-        if len(command) <= 0:
-            continue
-        if not check_command(command.split()[0]):
-            print("INVALID COMMAND")
-        else:
-            try:
-                if command in custom_commands.keys():
-                    custom_commands[command]()
-                    lineno = get_new_lineno(lineno, command)
-                else:
-                    run_command(command)
-            except:
-                pass
-        lineno += 1
+        lineno = result
 
     set_terminal_mode("canonical", old_term)
