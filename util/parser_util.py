@@ -155,12 +155,12 @@ def get_parser(program=sys.argv[0]):
     return parser
 
 def namer_util(args):
-    
     if args.list:
         return 'Supported races: ' + str(races)
     result = []
     for n in range(args.num_names):
         result.append(generate_name(args.race, args.gender))
+    return result
 
 def chargen_util(args):
     return generate_life_story()

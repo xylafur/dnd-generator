@@ -92,7 +92,7 @@ def handle_command(command, lineno):
                 else:
                     return run_command(command, lineno)
             except:
-                pass
+                return lineno
 
 def run_interactive():
     global old_term; global height; global width
