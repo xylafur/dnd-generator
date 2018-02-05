@@ -67,20 +67,16 @@ def display_result(result, lineno):
     return alter
 
 def run_command(command, lineno):
-    print("command: ", command)
     if isinstance(command, str):
         command = command.split()
     parser = get_parser(program=command[0])
     args = parser.parse_args(command)
-    print("after args")
 
     result = parser_util('shell', args.which, args)
 
-    print("result: " + result)
-    print("after result")
+    alter = display_result(result, lineno)
 
-    import time; time.sleep(2)
-    return lineno + display_result(result)
+    return lineno + alter
 
 def handle_command(command, lineno):
         if command == "quit":
@@ -93,17 +89,9 @@ def handle_command(command, lineno):
         else:
             try:
                 if command in custom_commands.keys():
-                    print("cust command")
-                    print("cust command")
-                    print("cust command")
                     custom_commands[command]()
                     return get_new_lineno(lineno, command)
                 else:
-                    print("reg command")
-                    print("reg command")
-                    print("reg command")
-                    print("reg command")
-                    print(lineno)
                     return run_command(command, lineno)
             except:
                 return lineno

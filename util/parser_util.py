@@ -204,8 +204,6 @@ def parser_util(who, util, args):
     """ function that calls all other util funcitons, either from the command
         line or from the interactive shell
     """
-    print("in parser util with who ", who)
-    print(result, result is None)
     result = utils[util](args)
     if not isinstance(result, list):
         result = [result] 
