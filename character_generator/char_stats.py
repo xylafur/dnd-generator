@@ -79,10 +79,18 @@ def calculate_stat_mod(stats):
     """
         Generate modifier scores based on given stats.
 
+        Args:
+            stats (:class: `dict` or `int`):  The stats to calculate if a dict,
+                or a single int to calculate if an integer.
+
         Returns:
-             (:class: `dict`):  The stats with their modifiers.
+             (:class: `dict` or `int`):  The stats with their modifiers, or an
+                int single if an int was passed in.
     """
     stats_mod = {}
+
+    if isinstance(stats, int):
+        return int((stats / 2)) - 5
 
     for stat in stats:
         # Integer division so it truncates and takes the floor.
@@ -112,7 +120,7 @@ def calculate_max_hp(stats, die, level):
     return max_hp
 
 
-def calculate_base_AC(stats):
+def calculate_base_ac(stats):
     """
         Calculate base AC without armor/spell modifiers.
 
@@ -133,3 +141,35 @@ def get_proficiency_mod(level):
             (:class: `int`):  The proficiency bonus.
     """
     return PROFICIENCY[level]
+
+
+def calculate_spell_dc(primary_stat, level):
+    """
+        Calculates the spell save DC for a given level and primary stat.
+
+        Args:
+            primary_stat (:class: `int`):  The stat value for calculating.
+
+            level (:class: `int`):  The level of the npc or character.
+
+        Returns:
+            (:class: `int`):  The spell save DC.
+    """
+    stat = calculate_stat_mod(primary_stat)
+    return 8 + get_proficiency_mod(level) + stat
+
+
+def calculate_spell_attack_mod(primary_stat, level):
+    """
+       Calculates the spell attack modifier added to attack rolls.
+
+       Args:
+           primary_stat (:class: `int`):  The stat value for calculating.
+
+           level (:class: `int`):  The level of the npc or character.
+
+       Returns:
+           (:class: `int`):  The spell attack modifier.
+   """
+    stat = calculate_stat_mod(primary_stat)
+    return get_proficiency_mod(level) + stat

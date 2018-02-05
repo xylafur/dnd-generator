@@ -121,10 +121,31 @@ def name_orc(gender):
 
 
 def name_human(gender=0):
-    male_nm = []
-    female_nm = []
-    pass
+    male = [
+            'muhammad', 'mohammad', 'farhan', 'raj', 'arjun',
+            'xiao', 'wei', 'li', 'chen'
+            #'brian', 'sean', 'nigel', 'darren', 'kevin',
+            #'juan'
+           ]
+    female = [
+              'fatimah', 'krishnagopal',
+              #'daisy', 'stacy', 'kacy',
+              #'juanita', 'rosa',
+             ]
 
+    neutral = [
+              #  'alex', 'jesse', 'adrian', 'avery', 'jordan', 'jamie'
+              ]
+    lastnm = [
+              'nguyen', 'mohammad', 'ashok', 'abdullah', 'bin laden', 'gopaludi',
+              #'chen', 'fong', 'fang', 'li', 
+              #'delaroux', 'smith', 'richardson',
+              #"o'brien",
+             ]
+
+    first = random.choice(female) if gender else random.choice(male)
+
+    return first + ' ' + random.choice(lastnm)
 
 
 def generate_name(race, gender):
@@ -138,6 +159,7 @@ def generate_name(race, gender):
         'elf': name_elf,
         'dwarf': name_dwarf,
         'orc': name_orc,
+        'human': name_human,
     }
     if race not in race_pair:
         print('Race '+race+' is not a supported race.')

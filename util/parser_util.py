@@ -5,7 +5,9 @@ import argparse
 from os import sys
 from random import randint
 
-from character_generator.char_stats import generate_stats_roll, calculate_stat_mod, calculate_base_AC, calculate_max_hp
+import character_generator.char_stats as stats
+
+from character_generator.char_stats import generate_stats_roll
 from info.races import choose_random_race
 from background_info.life_story import generate_character_backstory
 from background_info.namer import generate_name
@@ -15,15 +17,7 @@ from util.util import average_die
 
 # Function mapping of specific parts of the NPC.
 # TODO: Redo with class based inheritance on the stats.  This is clunky.
-CHARACTER = {'Name': '',
-             'Gender': '',
-             'Race': '',
-             'Background': '',
-             'Stats': '',
-             'Stat Modifier': '',
-             'Base AC': '',
-             'Maximum HP': '',
-            }
+CHARACTER = {}
 
 #we can add a config file that can create this dict at runtime from file
 parsers = {
@@ -175,22 +169,35 @@ def encounter_util(args):
     return generate_encounter(args.die)
 
 def chargen_util(*args, **kwds):
+    """
+        Generates a random npc with a backstory and stats.
+    """
+    # TODO: Do something with the arguments later.
+    # TODO: This is admittedly awful.  This will be changed after we refine the libary.
+    # It's currently here mostly for  testing purposes.
     gender = randint(0, 1)
+    level = 4
     CHARACTER['Race'] = choose_random_race()
     CHARACTER['Gender'] = 'Male' if gender else 'Female'
     CHARACTER['Name'] = generate_name(CHARACTER['Race'], gender)
     CHARACTER['Background'] = generate_character_backstory()
     CHARACTER['Stats'] = generate_stats_roll()
-    CHARACTER['Stat Modifier'] = calculate_stat_mod(CHARACTER['Stats'])
-    CHARACTER['Base AC'] = calculate_base_AC(CHARACTER['Stats'])
-
+    CHARACTER['Stat Modifier'] = stats.calculate_stat_mod(CHARACTER['Stats'])
+    CHARACTER['Base AC'] = stats.calculate_base_ac(CHARACTER['Stats'])
+    # Intelligence is for the wizard class, just using as a test.
+    CHARACTER['Spell Save DC'] = \
+        stats.calculate_spell_dc(CHARACTER['Stats']['Intelligence'], level)
+    CHARACTER['Spell Attack Mod'] = \
+        stats.calculate_spell_attack_mod(CHARACTER['Stats']['Intelligence'],
+                                         level)
     # TODO: To be better determined base on a class, for now hardcoding.
-    CHARACTER['Maximum HP'] = calculate_max_hp(CHARACTER['Stats'], 8, 4)
-
+    CHARACTER['Maximum HP'] = stats.calculate_max_hp(CHARACTER['Stats'], 8,
+                                                     level)
     result = []
     for key in CHARACTER:
         # Generate and print all the stats.
         result.append("{}: {}".format(key, CHARACTER[key]))
+
     return result
 
 utils = {
