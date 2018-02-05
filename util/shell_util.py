@@ -10,6 +10,9 @@ class DNDShellException(Exception):pass
 STDIN_FILENO = 0
 
 FUNCTIONS = list(parsers.keys())
+ARGS = {key: val for key, val in \
+        zip(FUNCTIONS, \
+            [val['args'] for val in parsers.values()])}
 
 PROMPT = "dnd> "
 prompt_len = len(PROMPT)
@@ -59,4 +62,34 @@ def help(command=None):
               "If you want help for a specific command, type help <command name>\n")
     else:
         pass
+def tabout(command):
+    match = False
+    match_str = ""
 
+    #possible arg parsing for future implemetation
+    """
+    for comm in FUNCTIONS:
+        if comm in command and '-' in command:
+            if '--' in command:
+                start = command.find('--')
+                for arg in ARGS[comm]:
+                    if command[start:] in arg:
+                        pass 
+            else:
+                return ""
+    """
+    for comm in FUNCTIONS:
+        if command in comm:
+            if not match:
+                match = True
+                match_str = comm
+            else:
+                return ""
+    return match_str[len(command):]
+
+
+
+
+
+
+        
