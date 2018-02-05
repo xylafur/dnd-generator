@@ -44,7 +44,7 @@ def get_command(lineno):
             command = command[:-1]
         #tab
         elif char == "\t":
-            print("got tab!")
+            command += tabout(command)
         #regular character
         else:
             command += char

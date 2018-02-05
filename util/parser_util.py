@@ -50,7 +50,9 @@ parsers = {
                          'help': 'gender of names to generate, 0 '
                                   'being male, 1 being female'}
             },
-     ]
+     ],
+     #these are for use by the cli
+     'args': ['list', 'num_names', 'race', 'gender']
     },
     'chargen': {
         'parser': {
@@ -66,7 +68,8 @@ parsers = {
                 'args': ['-p'],
                 'kwds': {'action': 'store', 'type': int, 'default': 1}
             },
-     ]
+     ],
+    'args': []
     },
     'diceroll': {
         'parser': {
@@ -89,7 +92,8 @@ parsers = {
                          'help': "number dice to roll"}
             },
 
-     ]
+     ],
+    'args': ['number']
     },
     'avg': {
         'parser': {
@@ -106,7 +110,8 @@ parsers = {
                 'kwds': {'metavar': 'D', 'type': int, 'nargs': '+', 
                          'help': 'give a list of die, will return the average'}
             },
-     ]
+     ],
+    'args': []
     },
 #    'stats': {
 #        'parser': {
