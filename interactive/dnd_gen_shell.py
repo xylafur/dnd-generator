@@ -45,12 +45,18 @@ def get_command(lineno):
         #tab
         elif char == "\t":
             command += tabout(command)
+        #this should be ctrl l but I can't get it to work
+        elif char == '\00c':
+            pass
         #regular character
         else:
             command += char
 
         sys.stdout.write(command) 
         sys.stdin.flush()
+
+def check_command(command, commands=FUNCTIONS):
+    return command in commands
 
 def run_command(command):
     if isinstance(command, str):
@@ -80,10 +86,17 @@ def run_interactive():
             break
         if len(command) <= 0:
             continue
-        try:
-            run_command(command)
-        except:
-            pass
+        if not check_command(command.split()[0]):
+            print("INVALID COMMAND")
+        else:
+            try:
+                if command in custom_commands.keys():
+                    custom_commands[command]()
+                    lineno = get_new_lineno(lineno, command)
+                else:
+                    run_command(command)
+            except:
+                pass
         lineno += 1
 
     set_terminal_mode("canonical", old_term)

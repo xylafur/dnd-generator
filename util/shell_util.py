@@ -9,7 +9,35 @@ class DNDShellException(Exception):pass
 """**************************Globals**************************"""
 STDIN_FILENO = 0
 
-FUNCTIONS = list(parsers.keys())
+def list_commands():
+    print("listing all functions, for more info ask help")
+    for function in FUNCTIONS:
+        print(function)
+    
+def help(command=None):
+    if not command:
+        print("This is the dnd interactive cli shell.\n"
+              "You can run commands in the same way you would directly from bash\n"
+              "If you want help for a specific command, type help <command name>\n")
+    else:
+        pass
+
+def clear():
+    clear_screen()
+    move_cursor(0, 0)
+
+def get_new_lineno(lineno, function):
+    if function == 'clear':
+        return 0
+    return lineno
+
+custom_commands = {
+    'list': list_commands,
+    'help': help,
+    'clear': clear
+}
+
+FUNCTIONS = list(parsers.keys()) + list(custom_commands.keys())
 ARGS = {key: val for key, val in \
         zip(FUNCTIONS, \
             [val['args'] for val in parsers.values()])}
@@ -50,18 +78,6 @@ def write_command_and_prompt(lineno, command):
     sys.stdout.write(command)
     sys.stdout.flush()
 
-def list_commands():
-    print("listing all functions, for more info ask help")
-    for function in FUNCTIONS:
-        print(function)
-    
-def help(command=None):
-    if not command:
-        print("This is the dnd interactive cli shell.\n"
-              "You can run commands in the same way you would directly from bash\n"
-              "If you want help for a specific command, type help <command name>\n")
-    else:
-        pass
 def tabout(command):
     match = False
     match_str = ""
