@@ -19,13 +19,15 @@ FUNCTIONS = [
 ]
 
 PROMPT = "dnd> "
+prompt_len = len(PROMPT)
 
 old_term = None 
 height = 0
 width = 0
 
 def move_cursor(x, y):
-    sys.stdout.write("\033[0;0H".format(y, x))
+    sys.stdout.write("\033[{};{}H".format(y, x))
+    sys.stdout.flush()
 
 def clear_screen():
     global height; global width
@@ -34,6 +36,13 @@ def clear_screen():
         for _ in range(width):
             sys.stdout.write(" ")
             sys.stdin.flush()
+
+def clear_line(lineno):
+    global width
+    move_cursor(0, lineno)
+    for _ in range(width):
+        sys.stdout.write(" ")
+        sys.stdin.flush()
 
 def set_terminal_mode(mode):
     global old_term
@@ -46,12 +55,21 @@ def set_terminal_mode(mode):
     clear_screen()
     move_cursor(0, 0)
 
-def get_command(starting_height):
+def write_command_and_prompt(lineno, command):
+    move_cursor(0, lineno)
+    sys.stdout.write(PROMPT)
+    move_cursor(prompt_len + 2, lineno)
+    sys.stdout.write(command)
+    sys.stdout.flush()
+
+def get_command(lineno):
     """ Function that grabs input until a newline or escape code is received
     """
     get_char = lambda: sys.stdin.read(1)
     command = ""
     while True:
+        clear_line(lineno)
+        write_command_and_prompt(lineno, command)
         char = get_char()
         #ctrl ^ C
         if char == "\x03":
@@ -86,10 +104,12 @@ def get_command(starting_height):
             print("got tab!")
         #regular character
         else:
+            print("regular char")
             command += char
-        clear_screen()
-        move_cursor(0, starting_height)
-        print(command)
+
+
+        sys.stdout.write(command) 
+        sys.stdin.flush()
 
 def run_command(command):
     if isinstance(command, str):
@@ -115,20 +135,26 @@ def run_interactive():
     global old_term; global height; global width
     height, width = list(map(int, os.popen('stty size', 'r').read().split()))
     old_term = termios.tcgetattr(STDIN_FILENO)
+
     set_terminal_mode("non-canonical")
+    move_cursor(0, 0)
     print("running in interactive mode.  Type help for help, quit to quit")
     move_cursor(0, 1)
-
+    
+    lineno = 3
     while True:
-        command = get_command(1)
+        command = get_command(lineno)
+        lineno += 1
+        move_cursor(0, lineno)
         if command == "quit":
             break
         if len(command) <= 0:
             continue
         try:
             run_command(command)
-        except Exception as e:
-            pass
+        except:
+            print("hit exception running command")
+        lineno += 1
 
     set_terminal_mode("canonical")
 
