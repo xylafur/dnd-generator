@@ -1,8 +1,42 @@
 """ THis is the module that defines all of the characters and their atributes
 """
+from character_generator.char_stats import *
 
+class InvalidCreatureParameterException(Exception): pass
+class Creature:
+    def __init__(self, base_stats=None, level=1):
+        self.level = level
 
-class Character:
+        if isinstance(bast_stats, dict):
+            self.stats = {}
+            for key, stat in zip(list(STAT_TYPES.keys()), base_stats):
+                self.stats[key] = stat
+        elif isinstance(base_stats, list):
+            self.stats = base_stats
+        elif stats is None:
+            self.stats = generate_stats_roll()
+        else:
+            InvalidCreatureParameterException("Cannot parse ase_stats of type"
+                                              "{}".format(type(base_state)))
+
+        self.modifiers = calculate_stat_mod(self.stats)
+
+        self.ac = calculate_base_ac(self.stats)
+
+    def __getattr__(self, attr):
+        """
+            Allows a user to grab the stat directly as if it were just another
+            property of the object
+
+            creature = Creature()
+            creature.strength
+        """
+        if attr in self.__dict__.keys():
+            return self.__dict__[attr]
+        if attr in STAT_TYPES.keys():
+            return self.stats[attr]
+
+class Character(Creature):
     def __init__(self):
         self.abilities = None
 
@@ -12,14 +46,8 @@ class Wizard(Character):
         self.spells = []
         self.spell_slots = 0
 
-
-class Conjurer(Wizard):
-    def __init__(self):
-        pass
-
-
 character_types = [
-    ("Conjurer", Conjurer)
+    #("Conjurer", Conjurer)
 ]
 
 

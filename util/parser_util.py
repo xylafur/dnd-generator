@@ -9,6 +9,7 @@ from info.races import races
 from lib.random_ext import dice_roll
 from util.util import average_die
 from util.char_gen_util import generate_character
+from testing.testing_main import run_testing
 
 
 #imported from an external file
@@ -113,6 +114,19 @@ parsers = {
      ],
     'args': []
     },
+    'test':{
+        'parser': {
+            'args': ['test'],
+            'kwds': {'help': 'test help'}
+        },
+        'defaults':{
+            'args': [],
+            'kwds': {'which': 'test'}
+        },
+        'arguments': [],
+    'args': []
+ 
+    }
 #    'stats': {
 #        'parser': {
 #            'args': ['stats'],
@@ -164,11 +178,16 @@ def avg_util(args):
 def encounter_util(args):
     print(generate_encounter(args.die))
 
+def testing_util(args):
+    print("running tests")
+    run_testing()
+
 utils = {
         'namer': namer_util,
         'chargen': generate_character,
         'diceroll': dice_util,
         'avg': avg_util,
+        'test': testing_util
     }
 
 def parser_util(util, args):

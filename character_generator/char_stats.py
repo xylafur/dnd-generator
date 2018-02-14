@@ -1,5 +1,5 @@
-
 from lib.random_die import roll_d20, roll_d
+
 
 STAT_TYPES = {'Strength': 0,
               'Constitution': 0,
