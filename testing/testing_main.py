@@ -8,11 +8,12 @@ def test_assert(exp):
 
 def basic_creature_test():
     creat = Creature()
-    test_assert(creat['strength'] != 0)
+    test_assert(creat.strength != 0)
 
-tests = []
+tests = [basic_creature_test]
 
 def run_testing(which='all'):
     if which == 'all':
-        pass
+        for test in tests:
+            test()
     
