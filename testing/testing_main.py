@@ -22,7 +22,7 @@ from imp import new_module
 from importlib import import_module
 
 from types import ModuleType
-from testing.testing_util import TestFailure
+from testing.testing_util import TestFailure, TestIncomplete
 
 #test_modules = [testing.character_tests]
 
@@ -36,6 +36,8 @@ def runtest(test):
         print("\033[1;32mSUCCESS\033[0m: ", end='')
     except TestFailure:
         print("\033[1;31mFAIL\033[0m: ", end='')
+    except TestIncomplete:
+        print("\033[1;34mINCOMPLETE\033[0m: ", end='')
     except Exception:
         pass
     print("{}".format(test.__name__))
