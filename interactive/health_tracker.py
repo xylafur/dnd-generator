@@ -9,10 +9,9 @@ class HealthTable:
         for i in range(n):
             name = input('Enter entity'+ str(i+1) +' name : ')
             hp = int(input('Enter entity max hp : '))
-            assert(hp > 0)
             chp = input('Enter current hp : ')
             chp = int(chp) if len(chp) else hp
-            chp = chp if 0 < chp <= hp else hp
+            assert(chp and hp)
 
             self.HT[name] = [chp, hp]
             self.total_max_hp += hp
