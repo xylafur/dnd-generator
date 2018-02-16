@@ -16,10 +16,15 @@
     tests_dict also needs to be implemented, basically a way to call a specific
     set of steps
 """
-import testing.character_tests 
+import testing.tests
+from os import listdir
+from imp import new_module
+from importlib import import_module
+
+from types import ModuleType
 from testing.testing_util import TestFailure
 
-test_modules = [testing.character_tests]
+#test_modules = [testing.character_tests]
 
 tests_dict = {}#{'creature': creature_tests}
 
@@ -28,17 +33,22 @@ tests = []
 def runtest(test):
     try:
         test()
-        #print("\033[1;32mSUCCESS\033[0m: ", end='')
+        print("\033[1;32mSUCCESS\033[0m: ", end='')
     except TestFailure:
-        #print("\033[1;31mFAIL\033[0m: ", end='')
-        pass
+        print("\033[1;31mFAIL\033[0m: ", end='')
     except Exception:
         pass
     print("{}".format(test.__name__))
 
+def get_test_modules():
+    test_files = listdir('testing/tests')
+    return [import_module('testing.tests.' + file[:-3]) for file in \
+            listdir('testing/tests')  if file[-3:] == '.py']
+
 def run_testing(which='all'):
+    test_modules = get_test_modules()
     tests = []
-    #import pdb; pdb.set_trace()
+
     for module in test_modules:
         for obj in module.__dict__.values():
             if hasattr(obj, '__call__')                      \
