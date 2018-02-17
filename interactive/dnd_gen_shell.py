@@ -5,6 +5,11 @@ import sys
 from util.parser_util import parser_util, get_parser
 from util.shell_util import *
 
+shell_commands = {"help": help,
+                  "list": list_commands
+                }
+
+
 def get_command(lineno):
     """ Function that grabs input until a newline or escape code is received
 
@@ -59,7 +64,7 @@ def get_command(lineno):
         sys.stdout.write(command) 
         sys.stdin.flush()
 
-def run_command(command):
+def run_command(lineno, command):
     """
         Runs the command provided and calls the utility
 
@@ -73,9 +78,16 @@ def run_command(command):
     """
     if isinstance(command, str):
         command = command.split()
+
+    if command[0] in shell_commands.keys():
+        lineno = shell_commands[command[0]](lineno, *command[1:])
+        return lineno
+
     parser = get_parser(program=command[0])
     args = parser.parse_args(command)
     parser_util(args.which, args)
+
+    return lineno
 
 
 def run_interactive():
@@ -109,10 +121,10 @@ def run_interactive():
         if len(command) <= 0:
             continue
         try:
-            run_command(command)
-        except:
+            lineno = run_command(lineno, command)
+        except Exception as e:
             #currently no exception handling other than passing
-            print("hit exception")
+            print("hit exception: {}".format(e))
         lineno += 1
 
     set_terminal_mode("canonical", old_term)

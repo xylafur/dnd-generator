@@ -89,34 +89,6 @@ def write_command_and_prompt(lineno, command):
     sys.stdout.write(command)
     sys.stdout.flush()
 
-def list_commands(lineno):
-    """ 
-        lists all of the valid commands in the shell
-
-        Arguments:
-            lineno (:class:`int`): the line to start printing the commands at
-    """
-    print("listing all functions, for more info ask help")
-    for function in FUNCTIONS:
-        print(function)
-        lineno += 1
-        move_cursor(0, lineno)
-    
-def help(lineno, command=None):
-    """ 
-        print help either for the shell or for the supplied command
-
-        Arguments:
-            lineno (:class:`int`): the lineno to start printing the help on
-
-            command (:class:`string`): the command to get help for, optional
-    """
-    if not command:
-        print("This is the dnd interactive cli shell.\n"
-              "You can run commands in the same way you would directly from bash\n"
-              "If you want help for a specific command, type help <command name>\n")
-    else:
-        pass
 def tabout(command):
     """ 
         tabout ro finish the partial command that the user has entered    
@@ -147,3 +119,48 @@ def tabout(command):
             else:
                 return ""
     return match_str[len(command):]
+
+"""**********************Custom Shell Commands***********************"""
+
+def list_commands(lineno):
+    """ 
+        lists all of the valid commands in the shell
+
+        Arguments:
+            lineno (:class:`int`): the line to start printing the commands at
+    """
+    print("listing all functions, for more info ask help")
+    lineno += 1
+    move_cursor(0, lineno)
+
+    for function in FUNCTIONS:
+        print(function)
+        lineno += 1
+        move_cursor(0, lineno)
+    return lineno
+    
+def help(lineno, command=None):
+    """ 
+        print help either for the shell or for the supplied command
+
+        Arguments:
+            lineno (:class:`int`): the lineno to start printing the help on
+
+            command (:class:`string`): the command to get help for, optional
+    """
+    help_lines = ["This is the dnd interactive cli shell.",
+                  "You can run commands in the same way you would directly from bash",
+                  "If you want help for a specific command, type help <command name>",
+                  "Example: namer --race elf --gender 0"
+                ]
+    if not command:
+        for line in help_lines:
+            print(line)
+            lineno += 1
+            move_cursor(0, lineno)
+    else:
+        print("Command help is currently not supported.. sorry!")
+        lineno += 1
+        move_cursor(0, lineno)
+
+    return lineno 
