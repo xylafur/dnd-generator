@@ -88,7 +88,7 @@ def run_interactive():
 
         Then we get the command, decide what to do.  Also keeps track of the
         line number so the screen can be presented in a orderly format
-    """
+    """ 
     global old_term; global height; global width
     height, width = list(map(int, os.popen('stty size', 'r').read().split()))
     old_term = termios.tcgetattr(STDIN_FILENO)
