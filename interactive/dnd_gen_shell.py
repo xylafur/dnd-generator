@@ -7,6 +7,13 @@ from util.shell_util import *
 
 def get_command(lineno):
     """ Function that grabs input until a newline or escape code is received
+
+        Arguments:
+            lineno (:class:`int`): the current line number.  Used for things
+                                   like clearing the line and prompt
+
+        Returns:
+            the command intered once the user has pressed inter
     """
     get_char = lambda: sys.stdin.read(1)
     command = ""
@@ -53,6 +60,17 @@ def get_command(lineno):
         sys.stdin.flush()
 
 def run_command(command):
+    """
+        Runs the command provided and calls the utility
+
+        Arguments:
+            command (:class:`string`): the command to run as a string in the
+                                       format it would be called from cli
+
+        Note:
+            The parser util command will handle printing to the screen in the
+            non cannonical format.  
+    """
     if isinstance(command, str):
         command = command.split()
     parser = get_parser(program=command[0])
@@ -61,6 +79,16 @@ def run_command(command):
 
 
 def run_interactive():
+    """
+        The main loop the shell mode
+
+        First the old state of the teminal is saved and then the changed to
+        a noncannonical terminal so we can handle anything the user enters into
+        the program
+
+        Then we get the command, decide what to do.  Also keeps track of the
+        line number so the screen can be presented in a orderly format
+    """
     global old_term; global height; global width
     height, width = list(map(int, os.popen('stty size', 'r').read().split()))
     old_term = termios.tcgetattr(STDIN_FILENO)
@@ -83,7 +111,8 @@ def run_interactive():
         try:
             run_command(command)
         except:
-            pass
+            #currently no exception handling other than passing
+            print("hit exception")
         lineno += 1
 
     set_terminal_mode("canonical", old_term)
