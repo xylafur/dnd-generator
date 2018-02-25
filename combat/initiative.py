@@ -20,7 +20,7 @@ def creature_prompt(creatures, verbose=False):
                            "creature")
     initiative = input(initiative_text + ": ")
 
-    creatures[name] = roll_d20() if 'roll' in initiative.lower() else int(initiative) 
+    creatures[name] = roll_d20(1) if 'roll' in initiative.lower() else int(initiative) 
 
 
 def obtain_initiative(additional=True, creatures=None, verbose=False):
