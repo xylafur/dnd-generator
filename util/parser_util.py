@@ -10,7 +10,7 @@ from lib.random_ext import dice_roll
 from util.util import average_die
 from util.char_gen_util import generate_character
 from testing.testing_main import run_testing
-
+from combat.initiative import initiative_tracker 
 
 #imported from an external file
 generate_character = generate_character
@@ -125,8 +125,21 @@ parsers = {
         },
         'arguments': [],
     'args': []
- 
-    }
+    },
+    'initiative':{
+        'parser': {
+            'args': ['initiative'],
+            'kwds': {'help': 'initiative help'}
+        },
+        'defaults':{
+            'args': [],
+            'kwds': {'which': 'initiative'}
+        },
+        'arguments': [],
+    'args': []
+    },
+
+
 #    'stats': {
 #        'parser': {
 #            'args': ['stats'],
@@ -182,12 +195,16 @@ def testing_util(args):
     print("running tests")
     run_testing()
 
+def initiative_util(args):
+    initiative_tracker()
+
 utils = {
         'namer': namer_util,
         'chargen': generate_character,
         'diceroll': dice_util,
         'avg': avg_util,
-        'test': testing_util
+        'test': testing_util,
+        'initiative': initiative_util
     }
 
 def parser_util(util, args):
