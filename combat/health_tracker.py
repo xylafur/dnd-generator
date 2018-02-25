@@ -24,6 +24,9 @@ class HealthTable:
             self.total_max_hp += hp
         print()
 
+    def add_health(self, nm, hp):
+        self.HT[nm] += hp
+
     def print_health_table(self):
         total_curr_hp = 0
         print('{:17s}{:13s}{:14s}{}'.format('NAME', '%HP', 'HP/MAX', 'STATUS'))
