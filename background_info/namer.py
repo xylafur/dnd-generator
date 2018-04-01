@@ -121,10 +121,31 @@ def name_orc(gender):
 
 
 def name_human(gender=0):
-    male_nm = []
-    female_nm = []
-    pass
+    male = [
+            'muhammad', 'mohammad', 'farhan', 'raj', 'arjun',
+            'xiao', 'wei', 'li', 'chen'
+            'brian', 'sean', 'nigel', 'darren', 'kevin',
+            'juan'
+           ]
+    female = [
+              'fatimah', 'krishnagopal',
+              'daisy', 'stacy', 'kacy',
+              'juanita', 'rosa',
+             ]
 
+    neutral = [
+                'alex', 'jesse', 'adrian', 'avery', 'jordan', 'jamie'
+              ]
+    lastnm = [
+              'nguyen', 'mohammad', 'ashok', 'abdullah', 'bin laden', 'gopaludi',
+              'chen', 'fong', 'fang', 'li', 
+              'delaroux', 'smith', 'richardson',
+              "o'brien",
+             ]
+
+    first = random.choice(female) if gender else random.choice(male)
+
+    return first + ' ' + random.choice(lastnm)
 
 
 def generate_name(race, gender):
@@ -132,12 +153,19 @@ def generate_name(race, gender):
         This function takes in a string @race
         and a int gender(0 for male, 1 for female)
         and generates a name.
+
+        example races: elf, dwarf, orc, human
+
+        example calls:
+        generate_name('elf',0)  # generates a male elf name
+        generate_name('dwarf',1)  # generates a female dwarf name
     """
     assert(type(race) == str and type(gender) == int)
     race_pair = {
         'elf': name_elf,
         'dwarf': name_dwarf,
         'orc': name_orc,
+        'human': name_human,
     }
     if race not in race_pair:
         print('Race '+race+' is not a supported race.')
@@ -146,5 +174,32 @@ def generate_name(race, gender):
     return race_pair[race](gender)
 
 
+def namer_table():
+    male_elves = []
+    female_elves = []
+    male_dwarves = []
+    female_dwarves = []
+
+    male_elves = [generate_name('elf', 0) for i in range(20)]
+    female_elves = [generate_name('elf', 1) for i in range(20)]
+
+    male_dwarves = [generate_name('dwarf', 0) for i in range(20)]
+    female_dwarves = [generate_name('dwarf', 1) for i in range(20)]
+
+    print('male_elves')
+    for i, n in enumerate(male_elves):
+        print('{:02d}   {:15}'.format(i+1, n))
+
+    print('female_elves')
+    for i, n in enumerate(female_elves):
+        print('{:02d}   {:15s}'.format(i+1, n))
+
+    print('male_dwarfs')
+    for i, n in enumerate(male_dwarves):
+        print('{:02d}   {:15s}'.format(i+1, n))
+
+    print('female_dwarfs')
+    for i, n in enumerate(female_dwarves):
+        print('{:02d}   {:15s}'.format(i+1, n))
 
 

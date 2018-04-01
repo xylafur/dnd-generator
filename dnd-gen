@@ -1,77 +1,29 @@
 #!/usr/bin/env python3
-import argparse
-
 from os import sys
 
-from util.char_gen_util import generate_character
+from util.parser_util import parser_util, get_parser
+from interactive.dnd_gen_shell import run_interactive
 
 
 if __name__ == '__main__':
-    prognm = sys.argv[0]
-
-    parser = argparse.ArgumentParser(prog=prognm,
-                                     description=prognm+' is a DnD toolkit')
-    subparser = parser.add_subparsers(help='sub command help')
-
-    # sub argument parser for namer utility
-    namer_parser = subparser.add_parser('namer', help='namer help')
-    namer_parser.set_defaults(which='namer')
-    namer_parser.add_argument('-l', '--list', action='store_true', help='list supported races')
-    namer_parser.add_argument('-n', '--num_names', action='store', type=int, default=1, help='number of names to generate')
-    namer_parser.add_argument('-r', '--race', action='store', type=str, default='elf', help='race of names to generate, default=elf')
-    namer_parser.add_argument('-g', '--gender', action='store', type=int, default=0, help='gender of names to generate, 0 being male, 1 being female')
-
-    # sub arugment parser for char gen
-    char_parser = subparser.add_parser('chargen', help='namer help')
-    char_parser.set_defaults(which='chargen')
-    char_parser.add_argument('-p', action='store', type=int, default=1)
-
-    # dice utility parser
-    dice_parser = subparser.add_parser('diceroll', help='diceroll help')
-    dice_parser.set_defaults(which='diceroll')
-    dice_parser.add_argument('dice', metavar='D', type=int, nargs='+',
-                    help='Highest number on the die you want to roll')
-    dice_parser.add_argument('-n', '--number', action='store', type=int, 
-                             default=1, help="number dice to roll")
-
-
-    # module for averagin die
-    avg_parser = subparser.add_parser('avg', help='avg help')
-    avg_parser.set_defaults(which='avg')
-    avg_parser.add_argument('die', metavar='D', type=int, nargs='+',
-                            help="give a list of die, will return the averate")
-
-    # stat parser
-    stat_parser = subparser.add_parser('stats', help='stat help')
-    stat_parser.set_defaults(which='avg')
-
-    # fetch arguments
+    if len(sys.argv) == 1:
+        run_interactive()
+        exit(0)
+    
+    parser = get_parser()
     args, leftovers = parser.parse_known_args()
-    # print(args)
 
     if len(sys.argv) <= 1:
         parser.print_help()
         parser.exit(1)
 
-    # utility dictionary
-    # TODO: Commenting out this utils until they are implemented.
-    utils = {
-        # 'namer': namer_util,
-        'chargen': generate_character,
-        # 'diceroll': dice_util,
-        # 'avg': avg_util,
-    }
-
     try:
-        # call function
-        if args.which in utils:
-            utils[args.which](args)
+        parser_util(args.which, args)
 
     except AttributeError:
         print("Error in parsing arguments")
         parser.print_help()
         sys.exit(1)
 
-    pass
 
 
