@@ -3,14 +3,21 @@
 """
 import argparse
 from os import sys
+
 from background_info.life_story import generate_character_backstory
 from background_info.namer import generate_name
+
 from info.races import races
+
 from lib.random_ext import dice_roll
+
 from util.util import average_die
 from util.char_gen_util import generate_character
+
 from testing.testing_main import run_testing
+
 from combat.initiative import initiative_tracker 
+from combat.combat import run_combat
 
 #imported from an external file
 generate_character = generate_character
@@ -51,9 +58,9 @@ parsers = {
                          'help': 'gender of names to generate, 0 '
                                   'being male, 1 being female'}
             },
-     ],
-     #these are for use by the cli
-     'args': ['list', 'num_names', 'race', 'gender']
+        ],
+        #these are for use by the cli
+        'args': ['list', 'num_names', 'race', 'gender']
     },
     'chargen': {
         'parser': {
@@ -69,8 +76,8 @@ parsers = {
                 'args': ['-p'],
                 'kwds': {'action': 'store', 'type': int, 'default': 1}
             },
-     ],
-    'args': []
+        ],
+        'args': []
     },
     'diceroll': {
         'parser': {
@@ -93,8 +100,8 @@ parsers = {
                          'help': "number dice to roll"}
             },
 
-     ],
-    'args': ['number']
+        ],
+        'args': ['number']
     },
     'avg': {
         'parser': {
@@ -111,8 +118,8 @@ parsers = {
                 'kwds': {'metavar': 'D', 'type': int, 'nargs': '+', 
                          'help': 'give a list of die, will return the average'}
             },
-     ],
-    'args': []
+        ],
+        'args': []
     },
     'test':{
         'parser': {
@@ -124,7 +131,7 @@ parsers = {
             'kwds': {'which': 'test'}
         },
         'arguments': [],
-    'args': []
+        'args': []
     },
     'initiative':{
         'parser': {
@@ -136,24 +143,55 @@ parsers = {
             'kwds': {'which': 'initiative'}
         },
         'arguments': [],
-    'args': []
+        'args': []
     },
-
-
-#    'stats': {
-#        'parser': {
-#            'args': ['stats'],
-#            'kwds': {'help': 'stat help'}
-#        },
-#        'defaults':{
-#            'args': [],
-#            'kwds': {'which': 'stat'}
-#        },
-#        'arguments': []
-#    },
+    'combat': {
+        'parser': {
+            'args': ['combat'],
+            'kwds': {'help': 'combat help'}
+        },
+        'defaults':{
+            'args': [],
+            'kwds': {'which': 'combat'}
+        },
+        'arguments': [
+            {
+                'args': ['-p', '--player-file'],
+                'kwds': {'action':'store', 'help': 'the file containing player stats',
+                         'type': str}
+            },
+        ],
+        'args': []
+    }
 }
 
 def get_parser(program=sys.argv[0]):
+    """
+        Function that generates the command line parser for the program.
+
+        Firstly it creates the base parser for the overall program and then
+        creates all of the sub parsers for each of the utilities based on the
+        parsers dictionary above.
+
+        Hopefully eventually we can move the above dict into a file of some
+        soft that can be open and parsed at runtime
+
+        Arguments:
+
+        Returns:
+            (:class:`ArgumentParser`): An arg parse parser for the program
+
+        Note:
+            This funciton should automarically be used by the program.  TO add
+            new entries into the parser there are 3 tings yoy must to
+
+            1: Add the parser's info into the dict above
+            2: Create a util function that will be called when the specific
+               utiliy is to be invoked
+            3: add a function pointer to that util function in the utils dict
+               below
+
+    """
     program = sys.argv[0]
     parser = argparse.ArgumentParser(prog=program,
                                      description=program+' is a DnD toolkit')
@@ -198,13 +236,17 @@ def testing_util(args):
 def initiative_util(args):
     initiative_tracker()
 
+def combat_util(args):
+    run_combat()
+
 utils = {
         'namer': namer_util,
         'chargen': generate_character,
         'diceroll': dice_util,
         'avg': avg_util,
         'test': testing_util,
-        'initiative': initiative_util
+        'initiative': initiative_util,
+        'combat': combat_util
     }
 
 def parser_util(util, args):
