@@ -156,10 +156,16 @@ parsers = {
         },
         'arguments': [
             {
-                'args': ['-p', '--player-file'],
-                'kwds': {'action':'store', 'help': 'the file containing player stats',
-                         'type': str}
+                'args': ['player_file'],
+                'kwds': {'metavar': 'P', 'type': str, 
+                         'help': 'The path to the file to use for characters'}
             },
+            {
+                'args': ['enemy_file'],
+                'kwds': {'metavar': 'E', 'type': str, 
+                         'help': 'The path to the file to use for enemies'}
+            },
+ 
         ],
         'args': []
     }
@@ -237,7 +243,7 @@ def initiative_util(args):
     initiative_tracker()
 
 def combat_util(args):
-    run_combat()
+    run_combat(args.player_file, args.enemy_file)
 
 utils = {
         'namer': namer_util,
