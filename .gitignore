@@ -105,3 +105,5 @@ ENV/
 tags
 *.swp
 *.sw*
+
+*.xml
