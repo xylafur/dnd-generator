@@ -34,6 +34,7 @@
 """
 from re import search, compile
 
+ONLY_IF_FIELD = compile(r'\[(\S+) onlyif ([^\]]+)\]')
 FIELD = compile(r'\[(\S+)\]')
 
 def ensure_valid_config(config_file='default_backstory_config'):
@@ -45,6 +46,12 @@ def ensure_valid_config(config_file='default_backstory_config'):
         for line in f:
             if not line or line[0] == '\n' or line[0] == '#':
                 continue
+
+            print(line)
+
+            match = search(ONLY_IF_FIELD, line)
+            if match:
+                import pdb; pdb.set_trace()
 
             match = search(FIELD, line)
             if match:
@@ -95,6 +102,17 @@ def load_config_to_dict(config_file='default_backstory_config'):
         for line in f:
             if line[0] == '#' or line == '\n' or not line:
                 continue
+
+            match = search(ONLY_IF_FIELD, line)
+            if match:
+                current_field = match.groups()[0]
+                fields[current_field] = {'percentages': [],
+                                         'modifiers': {'+': [], '-': []},
+                                         'extra': {'>': [], '<': []},
+                                         'cond': {'if': None, 'else': None},
+                                         'tot': 0, 'onlyif': match.groups()[1]}
+                continue
+
             match = search(FIELD, line)
             if match:
                 current_field = match.groups()[0]
@@ -102,7 +120,7 @@ def load_config_to_dict(config_file='default_backstory_config'):
                                          'modifiers': {'+': [], '-': []},
                                          'extra': {'>': [], '<': []},
                                          'cond': {'if': None, 'else': None},
-                                         'tot': 0}
+                                         'tot': 0, 'onlyif': None}
                 continue
 
             if not current_field:

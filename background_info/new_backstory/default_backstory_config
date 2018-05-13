@@ -110,16 +110,37 @@
 5 you never knew either
 
 [PARENTS]
-50 you knew both of your parents
-25 one of your parents were dead
-10 you didn't know your parents, you were raised by a relative
-5 you didn't know your parents, you were raised in a orphanage
-5 your parents sent you away to a home to be raised at as a child
+1 you are that of legend, raised by animals in the forest
 1 You do not have parents
 1 you were raised on a pirate ship and know nothing of your parents
+5 you didn't know your parents, you were raised in a orphanage
+10 you didn't know your parents, you were raised by a relative
+
+50 you knew both of your parents
+25 one of your parents were dead
+5 your parents sent you away to a home to be raised at as a child
 1 you do not remember who raised you, your memory of that time is not clear
 1 you were kidnapped by fey as a child an raised in the fey plane
-1 you are that of legend, raised by animals in the forest
+
+#I thing that this one is pretty obvious, this field is only processed if the
+#roll for parents was less than 18
+#if you look closley you will see that the first block below parents adds to 18
+
+[REASON_ABSENT onlyif PARENTS < 18 ]
+50 they were murdered
+30 your mother had you out of wedlock, sent you away
+10 you were chosen by the village speaker, and sent away as a young child
+5 your village was attacked and you ran away with a crowd never to see your parents again
+3 your parents basically got tarzaned, they were killed by monsters out in the jungle while you were a baby
+2 a fallen angel kidnapped you and took you to where you grew up
+
+[CHILDHOOD_MEMORIES]
+50 you had a pretty standard childhood, good memories and no significant bad ones
+25 some tragic things happened to you in your childhood, but you still enjoyed and made the most of it
+15 you had a rough childhood
+5 you had hardly no friends and were picked on
+3 you had a wonderful childhood!
+2 you were treated like a god as a child, worshiped by everyone
 
 [NUMBER_SIBLINGS]
 50 no siblings
@@ -129,5 +150,3 @@
 3 four siblings
 3 more than four siblings
 1 countless number of half brothers and half sisters
-
-

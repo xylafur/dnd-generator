@@ -38,9 +38,6 @@ def select_field_by_percent(current, this, fields):
 
                 modifiers.append(eval(entry))
 
-        print(modifiers)
-
-
         if modifier == '+':
             for add in modifiers:
                 val += add
@@ -86,9 +83,20 @@ def generate_backstory(config_file='default_backstory_config'):
     backstory = {}
 
     for key, val in fields.items():
-        backstory[key] = select_field_by_percent(val, key, fields)
+        if not val['onlyif']:
+            backstory[key] = select_field_by_percent(val, key, fields)
+            continue
+
+        for _key in fields.keys():
+            if _key in val['onlyif']:
+                val['onlyif'] = val['onlyif'].replace(_key,
+                                                      str(fields[_key]['tot']))
+        if eval(val['onlyif']):
+            backstory[key] = select_field_by_percent(val, key, fields)
 
     return backstory
+
+
 
 
 if __name__ == '__main__':
