@@ -1,7 +1,15 @@
 #This is the default backstory file, it will be used unless another is
 #specified
 
+#lines beginning with the '#' character will be ignored by the parser
+
+#The first thing that the parser expects is a field in brackets like this
+
 [BIRTHPLACE]
+
+#then this is the percentage for each field, in this case meaning that there is
+#a 25% chance the player lived in a regular home
+
 25 in a regular home
 25 in a medical place via a doctor
 10 in the home of a witchdoctor
@@ -10,11 +18,96 @@
 5 in from of a live audience
 5 on another plane
 5 unknown
+
+#and as you can see, the chance of being born in one of these strange places is
+#very low
 1 in the lab of a crazy wizard
 1 in a basement while your parents were hiding from someone or something
 1 in a field during a battle
 1 in a sewer
 1 in a Castle
+
+#there are also many other neat little features that can be used in the config
+
+[FAMILY_WEALTH]
+
+#you will see that sometimes, keeping track of the total of a previous field is
+#important to later ones
+
+#because of this, the parser will automatically keep track of the total of each
+#field
+
+#you can present the percentages in a particular way to take advantage of this
+#if you undertand a little about how the parser works
+
+#the parser adds up the running total, and uses that against the random value
+#it came up with.  THis random value will always be between 1 and 100
+#This is just because we use out of 100% by default
+
+#if goes in order.  So if the value if between 1 and 5 (inclusive) it will
+#result in the player having no worldly possesions
+
+#but if you grow up in a poor childhood, it wouldn't make sense to live in a
+#castle
+
+5 you had almost no money during your childhood, as well as no worldly posessions
+10 you lived squalid lifestyle, you lived a very economically challenging childhood
+10 you lived a poor childhood lower class
+25 You lived a modest lifestyle, lower middle class
+25 You lived a comfortable lifestyle, upper middle class
+10 you lived a wealthy childhood, upper class
+10 you lived an aristocratic lifestyle as a child
+5 you grew up with a family that had more money and possesions than to know what to do
+
+#thats why we can and subtract the values of previous fields from the random
+#value that the parser comes up with
+
+[CHILDHOOD_HOME]
+
+#we can use + and - to add and subtract values to and from what we tolled
+
+#you can pass in a valid mathmatecal expression like so
+
+#this is based on a quadratic fit I did to get proper scaling
+
+#y = -12 + 2.8 * x - .05 * x + .00045 * x**3
++ FAMILY_WEALTH
+
+#so in this case, whatever we had for our family wealth (lets use the eample of
+#before of 5, meaning we grew up with no worly possesions, we would add that to
+#our roll.
+
+#but then you might think what happens if we roll a number that results in
+#something less than or greater than 100?
+
+#well that is why we can use these symbols
+
+#if total that we rolled plus all the other values we added in is less than 1
+< on the streets
+#if it is greater than 100
+> in a Palace or Castle
+
+#and then these are just the regular parcentages
+
+5 in a rundown shack
+10 no permenent residence, had to move from broken home to broken home
+10 some encampment or village in the wilderness
+25 in a small house
+25 in a large house
+10 on a plantation with much land, a very nice home
+10 in a mansion
+5 in a mansion in the most thriving part of your home
+
+#please note that all of these modifiers must come before the percentages and
+#values
+
+
+[KNOW_PARENTS]
+50 you know both of your parents
+25 you only knew one of your parents
+15
+5 you met your parents later in life.
+5 you never knew either
 
 [PARENTS]
 50 you knew both of your parents
@@ -27,4 +120,14 @@
 1 you do not remember who raised you, your memory of that time is not clear
 1 you were kidnapped by fey as a child an raised in the fey plane
 1 you are that of legend, raised by animals in the forest
+
+[NUMBER_SIBLINGS]
+50 no siblings
+25 one sibling
+12 two siblings
+6 three siblings
+3 four siblings
+3 more than four siblings
+1 countless number of half brothers and half sisters
+
 

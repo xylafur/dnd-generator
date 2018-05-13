@@ -10,7 +10,7 @@
 from random import randint
 from config_loader import load_config_to_dict
 
-def select_field_by_percent(possible):
+def select_field_by_percent(current, this, fields):
     """
         Generates a random number between 1 and 100, creates a running total
         from the percentages and then selects a value approprietly
@@ -21,8 +21,56 @@ def select_field_by_percent(possible):
     tot = 0
     val = randint(1, 100)
 
-    for entry in possible:
+    for modifier, value in current['modifiers'].items():
+
+        modifiers = []
+
+        if not value or not modifier:
+            break
+        else:
+            found_key = False
+
+            for entry in value:
+                for key in fields.keys():
+                    if key in entry:
+                        found_key = True
+                        entry = entry.replace(key, str(fields[key]['tot']))
+
+                modifiers.append(eval(entry))
+
+        print(modifiers)
+
+
+        if modifier == '+':
+            for add in modifiers:
+                val += add
+        elif modifier == '-':
+            for sub in modifiers:
+                val -= sub
+
+    for extra, value in current['extra'].items():
+        if not extra or not value:
+            break
+
+        if extra == '>':
+            if val >= 100:
+                return value
+        elif extra == '<':
+            if val <= 0:
+                return value
+
+    for cond, value in current['cond'].items():
+        if not cond or not value:
+            break
+
+        if modifier == 'if':
+            pass
+        elif modifier == 'else':
+            pass
+
+    for entry in current['percentages']:
         if tot <= val <= tot + entry[0]:
+            fields[this]['tot'] = val
             return entry[1]
 
         tot += entry[0]
@@ -38,7 +86,7 @@ def generate_backstory(config_file='default_backstory_config'):
     backstory = {}
 
     for key, val in fields.items():
-        backstory[key] = select_field_by_percent(val)
+        backstory[key] = select_field_by_percent(val, key, fields)
 
     return backstory
 
