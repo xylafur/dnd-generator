@@ -1,4 +1,4 @@
-""" Module to hold all of the functions called by parsers, also has a utility 
+""" Module to hold all of the functions called by parsers, also has a utility
     that calls them
 """
 import argparse
@@ -6,6 +6,7 @@ from os import sys
 
 from background_info.depricated.life_story import generate_character_backstory
 from background_info.namer import generate_name
+from background_info.backstory_generator import backstory_main
 
 from info.races import races
 
@@ -16,7 +17,7 @@ from util.char_gen_util import generate_character
 
 from testing.testing_main import run_testing
 
-from combat.initiative import initiative_tracker 
+from combat.initiative import initiative_tracker
 from combat.combat import run_combat
 
 #imported from an external file
@@ -168,7 +169,33 @@ parsers = {
  
         ],
         'args': []
-    }
+    },
+
+    'backstory': {
+        'parser': {
+            'args': ['backstory'],
+            'kwds': {
+                'help':'backstory help'
+            }
+        },
+        'defaults':{
+            'args': [],
+            'kwds': {
+                'which': 'backstory'
+            }
+        },
+        'arguments': [
+            {
+                'args': ['-c', '--config'],
+                'kwds': {'action': 'store', 'type': str, 'default': '',
+                         'help': 'location of non default config file from '
+                                 'local director'}
+            },
+        ],
+        #these are for use by the cli
+        'args': ['config']
+    },
+
 }
 
 def get_parser(program=sys.argv[0]):
@@ -252,7 +279,8 @@ utils = {
         'avg': avg_util,
         'test': testing_util,
         'initiative': initiative_util,
-        'combat': combat_util
+        'combat': combat_util,
+        'backstory': backstory_main
     }
 
 def parser_util(util, args):
