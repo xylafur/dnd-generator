@@ -1,0 +1,30 @@
+#This is the default backstory file, it will be used unless another is
+#specified
+
+[BIRTHPLACE]
+25 in a regular home
+25 in a medical place via a doctor
+10 in the home of a witchdoctor
+10 outside
+10 on a ship while your parent(s) were traveling
+5 in from of a live audience
+5 on another plane
+5 unknown
+1 in the lab of a crazy wizard
+1 in a basement while your parents were hiding from someone or something
+1 in a field during a battle
+1 in a sewer
+1 in a Castle
+
+[PARENTS]
+50 you knew both of your parents
+25 one of your parents were dead
+10 you didn't know your parents, you were raised by a relative
+5 you didn't know your parents, you were raised in a orphanage
+5 your parents sent you away to a home to be raised at as a child
+1 You do not have parents
+1 you were raised on a pirate ship and know nothing of your parents
+1 you do not remember who raised you, your memory of that time is not clear
+1 you were kidnapped by fey as a child an raised in the fey plane
+1 you are that of legend, raised by animals in the forest
+
