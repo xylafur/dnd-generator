@@ -1,6 +1,6 @@
 import character_generator.char_stats as stats
 
-from background_info.life_story import generate_character_backstory
+from background_info.depricated.life_story import generate_character_backstory
 from background_info.namer import generate_name
 from character_generator.char_stats import generate_stats_roll
 from info.races import choose_random_race

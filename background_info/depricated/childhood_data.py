@@ -1,6 +1,6 @@
 from random import choice, randint
 
-from background_info.backstory_generator import cause_of_death
+from background_info.depricated.backstory_generator import cause_of_death
 
 absent_parents = ["None", "Institution, such as an asylum", "Temple", 
                  "Orphanage", "guardian", "aunt", "uncle", "aunt and uncle", 
@@ -92,11 +92,11 @@ childhood_home = [
     ]
 
 childhood_memories = [
-     ((-100, 3), "still haunted by childhood"),
-     ((4, 5), "spent most of childhood alone with no close friends"),
+     ((-100, 3), "still haunted by depricated.childhood"),
+     ((4, 5), "spent most of depricated.childhood alone with no close friends"),
      ((6, 8), "Others saw me as being different or strange, and so I had few companions"),
-     ((9, 12), "a few close friends and lived an ordinary childhood"),
-     ((13, 15), "had several friends and childhood was generally a happy one"),
+     ((9, 12), "a few close friends and lived an ordinary depricated.childhood"),
+     ((13, 15), "had several friends and depricated.childhood was generally a happy one"),
      ((16, 17), "always found it easy to make friends and loved being around people"),
      ((18, 100), "Everyone knew who I was, and had friends everywhere I went"),
     ]

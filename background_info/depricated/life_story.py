@@ -5,8 +5,8 @@ from random import choice, randint
 from info.races import races
 from lib.random_die import roll_event
 from background_info.namer import generate_name
-from background_info.backstory_generator import cause_of_death, get_life_events
-from background_info.childhood import *
+from background_info.depricated.backstory_generator import cause_of_death, get_life_events
+from background_info.depricated.childhood import *
 
 MALE = 1
 FEMALE = 0

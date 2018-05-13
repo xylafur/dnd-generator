@@ -4,7 +4,7 @@
 import argparse
 from os import sys
 
-from background_info.life_story import generate_character_backstory
+from background_info.depricated.life_story import generate_character_backstory
 from background_info.namer import generate_name
 
 from info.races import races

@@ -2,7 +2,7 @@ from lib.random_die import roll_event, roll_d100
 from lib.exceptions import RaceNotSupportedException
 from background_info.namer import generate_name
 
-from background_info.childhood_data import *
+from background_info.depricated.childhood_data import *
 
 def generate_birthplace():
     return roll_event(100, birthplaces)
