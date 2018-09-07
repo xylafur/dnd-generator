@@ -167,9 +167,7 @@ def name_goliath(gender=None):
         "Thunukalathi", "Vaimei-Laga"
     ]
 
-    x, y, z = map(random.choice, [birth, nick, clan])
-    return "{} {} {}".format(x, y, z)
-
+    return " ".join(map(random.choice, [birth, nick, clan]))
 
 def generate_name(race, gender):
     """
