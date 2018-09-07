@@ -138,7 +138,7 @@ def name_human(gender=0):
               ]
     lastnm = [
               'nguyen', 'mohammad', 'ashok', 'abdullah', 'bin laden', 'gopaludi',
-              'chen', 'fong', 'fang', 'li', 
+              'chen', 'fong', 'fang', 'li',
               'delaroux', 'smith', 'richardson',
               "o'brien",
              ]
@@ -146,6 +146,29 @@ def name_human(gender=0):
     first = random.choice(female) if gender else random.choice(male)
 
     return first + ' ' + random.choice(lastnm)
+
+def name_goliath(gender=None):
+    birth = [
+        "Aukan", "Eglath", "Gae-Al", "Gauthak", "Ilikan", "Keothi", "Kuori",
+        "Lo-Kag", "Manneo", "Maveith", "Nalla", "Orilo", "Paavu", "Pethani",
+        "Thalai", "Thotham", "Uthal", "Vaunea", "Vimak"
+    ]
+
+    nick = [
+        "Bearkiller", "Dawncaller", "Fearless", "Flintfinder", "Horncarver",
+        "Keeneye", "Lonehunter", "Longleaper", "Rootsmasher", "Skywatcher",
+        "Steadyhand", "Threadtwister", "Twice-Orphaned", "Twistedlimb",
+        "Wordpainter"
+    ]
+
+    clan = [
+        "Anakalathai", "Elanithino", "Gathakanathi", "Kalagiano",
+        "Katho-Olavi", "Kolae-Gileana", "Ogolakanu", "Thuliaga",
+        "Thunukalathi", "Vaimei-Laga"
+    ]
+
+    x, y, z = map(random.choice, [birth, nick, clan])
+    return "{} {} {}".format(x, y, z)
 
 
 def generate_name(race, gender):
@@ -166,6 +189,7 @@ def generate_name(race, gender):
         'dwarf': name_dwarf,
         'orc': name_orc,
         'human': name_human,
+        'goliath': name_goliath
     }
     if race not in race_pair:
         print('Race '+race+' is not a supported race.')
