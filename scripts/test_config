@@ -1,0 +1,25 @@
+
+@NEW CREATURE
+NAME=Daigon
+TOKEN=Barbarian
+INITIATIVE=8
+
+ATTACKS=greatsword,damage:2d6+10,to-hit:10;longsword,damage:1d6+10,to-hit:10
+MOVEMENT=30
+HP=100
+
+AC=18
+@END CREATURE
+
+
+@NEW CREATURE
+NAME=Raymond
+TOKEN=Bard
+INITIATIVE=4
+ATTACKS=longsword,to-hit:5,damage:1d6+5
+MOVEMENT=30
+HP=60
+AC=14
+@END CREATURE
+
+
