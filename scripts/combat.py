@@ -30,11 +30,13 @@ COMMANDS = {"load <file1> [file2] [file3] ...":
 #commands for the main combat menu
 COMBAT_COMMANDS = {
             "help": "show this help",
-            "show": "shows the health of all creatures in combat",
+            "show|list": "shows the health of all creatures in combat",
             "damage <creature> <ammount>":
                 "listed takes or gain the ammount of health listed",
+            "heal <creature> <ammount>":
+                "heals given greature by given ammount",
             "purge": "drops all creatures with health below 0 from the list",
-            'who': "shows who's turn it currently is",
+            'who|turn': "shows who's turn it currently is",
             "attack": "enters the attacking menu for the current creature",
             "kill": "remove a creature from the list of creatures in combat"
         }
@@ -149,18 +151,34 @@ def parse_config_file(filename):
     return creatures
 
 
-def print_help(combat=False):
+def print_help(combat=False, attack=False):
     global COMBAT_COMMANDS
     global COMMANDS
-    if not combat:
-        for name, what in COMMANDS.items():
-            print(name)
-            print("    " + what)
-    else:
+    if combat:
         for name, what in COMBAT_COMMANDS.items():
             print(name)
             print('    ' + what)
+    if attack:
+        for name, what in ATTACK_COMMANDS.items():
+            print(name, '\n    ', what);
 
+    else:
+        for name, what in COMMANDS.items():
+            print(name)
+            print("    " + what)
+
+ATTACK_COMMANDS = {
+    'list|show': "lists all of the creatures attacks and damage and info",
+    "attack <weapon>": 
+        "attack with the desired weapon, weapon can be either string or int",
+
+    "heal-self <ammount>": "heal self by given ammount",
+    "damage-self <ammount>": "damage self by specific ammount",
+    "heal <creature name> <ammount>": "heal other creature by ammount",
+    "damage <creature name> <ammount>": "damage other creature by ammount",
+
+        
+}
 
 def combat_menu(creatures):
     """
@@ -173,11 +191,49 @@ def combat_menu(creatures):
     """
 
     def do_turn(creature):
+        print("$$$ {} $$$".format(creature["NAME"]))
         while True:
-            print("$$$ {} $$$".format(creature["NAME"]))
             command = input("===>").strip()
-            if command == 'exit':
-                break
+            if command == 'exit':   break
+            if not command:         continue
+            if command == 'help':   print_help(attack=True)
+
+            elif command in ['list', 'show']:
+                print("{}, HP = {}".format(creature["NAME"], creature['HP']))
+                print("Attacks:")
+                for ii, attack in enumerate(creature['ATTACKS']):
+                    print("{}    {}: dam: {}, + to hit: {}".format(ii,
+                        attack['name'], attack['damage'], attack['to-hit']))
+            else:
+                split = command.split()
+                if split[0] in ['heal-self', 'damage-self']:
+                    if not split[1].isdigit():
+                        print("arg 1 needs to be a digit")
+                        continue
+                    creature['HP'] += int(split[1]) if split[0] == 'heal-self'\
+                                      else -int(split[1])
+
+                elif split[0] == 'attack':
+                    choice = split[1]
+                    _a = [attack for attack in creature['ATTACKS']]
+                    if choice.isdigit():
+                        if int(choice) > len(creature['ATTACKS']) or        \
+                           int(choice) < 0: print("Not in range!"); continue
+                        print("Attacking with {}".format(
+                            creature['ATTACKS'][int(choice)]))
+
+                    elif choice in [aa['name'] for aa in _a]:
+                        for each in _a:
+                            if each['name'] == choice:
+                                print("doing {} damage".format(each['damage']))
+
+
+                    else:   print("invalid param for damage!"); continue
+
+
+
+                    
+                else: print("What?"); continue
 
 
     print("Entering combat with {} creatures!".format(len(creatures)))
@@ -190,14 +246,14 @@ def combat_menu(creatures):
             continue
         if 'help' in command:
             print_help(combat=True)
-        elif command == "show":
+        elif command == "show" or command == 'list':
             for cre, hea in zip([creature["NAME"] for creature in creatures],
                                 [creature["HP"] for creature in creatures]):
                 print("{}: {}".format(cre, hea))
         elif command == 'purge':
             creatures = [creature for creature in creatures if 
                             creature['HP'] > 0]
-        elif command == 'who':
+        elif command == 'who' or command == 'turn':
             print("Currently it is {}'s turn".format(creatures[current]['NAME']))
 
         elif command == 'attack':
@@ -226,6 +282,23 @@ def combat_menu(creatures):
                 for creature in creatures:
                     if creature['NAME'] == split[1]:
                         creature["HP"] -= int(split[2])
+
+            elif split[0] == 'heal':
+                if len(split) != 3:
+                    print("invalid # of args for damage command")
+                    continue
+                if split[1] not in [creature["NAME"] for creature in creatures]:
+                    print("{} is not in the creatures list".format(split[1]))
+                    continue
+                if not split[2].isdigit():
+                    print("3rd param must be an int")
+                    continue
+                #probably a more clever way to do this
+                for creature in creatures:
+                    if creature['NAME'] == split[1]:
+                        creature["HP"] += int(split[2])
+
+                   
             elif split[0] == 'kill':
                 if len(split) != 2:
                     print("Need to supply name of creature to kill!")
