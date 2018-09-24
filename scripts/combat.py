@@ -176,9 +176,8 @@ ATTACK_COMMANDS = {
     "damage-self <ammount>": "damage self by specific ammount",
     "heal <creature name> <ammount>": "heal other creature by ammount",
     "damage <creature name> <ammount>": "damage other creature by ammount",
-
-        
 }
+
 
 def combat_menu(creatures):
     """
@@ -189,6 +188,13 @@ def combat_menu(creatures):
         This keeps track of whos turn it is, the health of all creatures and
         will 
     """
+    def calc_damage(damage_str):
+        import re
+        import random
+        regex = re.compile(r"([\d]+)d([\d]+)\s*\+\s*([\d]+)")
+        num_die, die_type, additional = map(int, re.search(regex,
+                                                           damage_str).groups())
+        return num_die * random.randint(1, die_type) + additional
 
     def do_turn(creature):
         print("$$$ {} $$$".format(creature["NAME"]))
@@ -214,25 +220,25 @@ def combat_menu(creatures):
                                       else -int(split[1])
 
                 elif split[0] == 'attack':
+                    if len(split) <= 1:  print("select weapon"); continue
                     choice = split[1]
+
                     _a = [attack for attack in creature['ATTACKS']]
                     if choice.isdigit():
                         if int(choice) > len(creature['ATTACKS']) or        \
                            int(choice) < 0: print("Not in range!"); continue
-                        print("Attacking with {}".format(
-                            creature['ATTACKS'][int(choice)]))
+                        choice = creature['ATTACKS'][int(choice)]['name']
 
-                    elif choice in [aa['name'] for aa in _a]:
+                    if choice in [aa['name'] for aa in _a]:
                         for each in _a:
                             if each['name'] == choice:
-                                print("doing {} damage".format(each['damage']))
+                                print("Attacking with {}, does {} damage".format(
+                                      choice, calc_damage(each['damage'])))
+
+
 
 
                     else:   print("invalid param for damage!"); continue
-
-
-
-                    
                 else: print("What?"); continue
 
 
