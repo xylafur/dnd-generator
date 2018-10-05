@@ -2,9 +2,7 @@ import sys
 import os
 import random
 
-#the expected arguments for each creature entry in a config file
-EXPECTED_ARGS = ["NAME", "TOKEN", "INITIATIVE", "ATTACKS", "MOVEMENT", "HP",
-                 "AC"]
+from parser import parse_config_file
 
 #commands to be used in the main menu, this is just the help really though.
 #the actual definition of what these commands do is implemented in the main
@@ -67,90 +65,6 @@ def sort_by_initiative(creatures):
         s_creatures.append(creatures.pop(l_index))
     return s_creatures
 
-def die(*args):
-    """
-        print args and then exit
-    """
-    for each in args:
-        print(each)
-    print("exiting..")
-    exit()
-
-
-def verify_expected_args(creature):
-    global EXPECTED_ARGS
-    for arg in EXPECTED_ARGS:
-        if arg not in creature.keys():
-            die("Was not able to find arg {} in creature def".format(arg))
-
-def parse_arg(arg, value):
-    if arg == 'ATTACKS':
-        attacks = []
-        weapons = value.split(';')
-        for _weapon in weapons:
-            weapon = {}
-            found_name = False
-            for entry in _weapon.split(','):
-                if ':' not in entry:
-                    if found_name: die("Found multiple names for weapon!")
-                    weapon['name'] = entry
-                    found_name = True
-                    continue
-                split = entry.split(':')
-                weapon[split[0]] = split[1]
-            attacks.append(weapon)
-        return attacks
-
-    elif arg in ['INITIATIVE', "MOVEMENT", 'HP', 'AC']:
-        return int(value)
-
-    else:
-        return value
-
-def parse_config_file(filename):
-    """
-        Opens up a combat config file and parses all of the entries into dicts
-    """
-    creatures = []
-    creating_creature = False
-    with open(filename) as f:
-        current_creature = {}
-        for line in [_line.strip() for _line in f]:
-            if not line or len(line) == 0:
-                continue
-
-            if line[0] == '@':
-                split = line[1:].split()
-                if split[0] == 'NEW':
-                    if split[1] != 'CREATURE':
-                        die("Not sure how to create new {}".format(split[1]))
-
-                    if creating_creature:
-                        die("Creating new creature without ending old "
-                            "definition?")
-                    current_creature = {}
-                    creating_creature = True
-                if split[0] == 'END':
-                    if split[1] != 'CREATURE':
-                        die("Not sure how to end def of {}".format(split[1]))
-                    if not creating_creature:
-                        die("Cannot end creature def without first starting"
-                              " def")
-
-                    verify_expected_args(current_creature)
-                    creatures.append(current_creature)
-                    creating_creature = False
-
-            elif '=' not in line:
-                print("What is this line: {} ?".format(line))
-            else:
-                split = line.split('=')
-                current_creature[split[0]] = parse_arg(split[0], split[1])
-            
-
-    return creatures
-
-
 def print_help(combat=False, attack=False):
     global COMBAT_COMMANDS
     global COMMANDS
@@ -158,7 +72,8 @@ def print_help(combat=False, attack=False):
         for name, what in COMBAT_COMMANDS.items():
             print(name)
             print('    ' + what)
-    if attack:
+
+    elif attack:
         for name, what in ATTACK_COMMANDS.items():
             print(name, '\n    ', what);
 
@@ -176,6 +91,7 @@ ATTACK_COMMANDS = {
     "damage-self <ammount>": "damage self by specific ammount",
     "heal <creature name> <ammount>": "heal other creature by ammount",
     "damage <creature name> <ammount>": "damage other creature by ammount",
+    "done|quit|exit": "go back to the combat menu"
 }
 
 
@@ -196,11 +112,11 @@ def combat_menu(creatures):
                                                            damage_str).groups())
         return num_die * random.randint(1, die_type) + additional
 
-    def do_turn(creature):
+    def do_turn(creature, creatures):
         print("$$$ {} $$$".format(creature["NAME"]))
         while True:
             command = input("===>").strip()
-            if command == 'exit':   break
+            if command in ['exit', 'quit', 'done']:   break
             if not command:         continue
             if command == 'help':   print_help(attack=True)
 
@@ -219,6 +135,20 @@ def combat_menu(creatures):
                     creature['HP'] += int(split[1]) if split[0] == 'heal-self'\
                                       else -int(split[1])
 
+                elif split[0] in ['heal', 'damage']:
+                    if len(split) != 3: print("need 3 args!") ; continue
+                    if not split[2].isdigit():
+                        print("arg 2 needs to be digit"); continue
+                    if split[1] not in [creature['NAME'] for creature in
+                                        creatures]:
+                        print("arg 1 needs to be a valid creature!")
+                        continue
+                    for _creature in creatures:
+                        if _creature['NAME'] == split[1]:
+                            _creature['HP'] += int(split[2]) if             \
+                                split[0] == 'heal' else -int(split[2])
+
+
                 elif split[0] == 'attack':
                     if len(split) <= 1:  print("select weapon"); continue
                     choice = split[1]
@@ -234,8 +164,6 @@ def combat_menu(creatures):
                             if each['name'] == choice:
                                 print("Attacking with {}, does {} damage".format(
                                       choice, calc_damage(each['damage'])))
-
-
 
 
                     else:   print("invalid param for damage!"); continue
@@ -316,11 +244,6 @@ def combat_menu(creatures):
                              creature["NAME"] != split[1]]
             else:
                 print("What?")
-
-
-
-        
-        
 
 def start_combat(files):
     """
