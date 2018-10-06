@@ -36,7 +36,7 @@ COMBAT_COMMANDS = {
             "purge": "drops all creatures with health below 0 from the list",
             'who|turn': "shows who's turn it currently is",
             "attack": "enters the attacking menu for the current creature",
-            "kill": "remove a creature from the list of creatures in combat"
+            "kill": "remove a creature from the list of creatures in combat",
         }
 
 
@@ -97,7 +97,7 @@ ATTACK_COMMANDS = {
 
 def combat_menu(creatures):
     """
-        THis is similar to the main menu, in that the user can supply commands
+        This is similar to the main menu, in that the user can supply commands
         to the menu which have the desired effect, invalid commands should not
         break the program.
 
@@ -107,14 +107,31 @@ def combat_menu(creatures):
     def calc_damage(damage_str):
         import re
         import random
-        regex = re.compile(r"([\d]+)d([\d]+)\s*\+\s*([\d]+)")
-        num_die, die_type, additional = map(int, re.search(regex,
-                                                           damage_str).groups())
-        return num_die * random.randint(1, die_type) + additional
+        total = 0
+        die_regex = re.compile(r"([\d]+)d([\d]+)")
+        int_regex = re.compile(r"([\d]+)")
+        while damage_str:
+            match = re.search(die_regex, damage_str)
+            if match:
+                damage_str = damage_str[match.span()[1]:]
+                groups = match.groups()
+                for _ in range(int(groups[0])):
+                    total += random.randint(1, int(groups[1]))
+            else:
+                match = re.search(int_regex, damage_str)
+                if match:
+                    total += int(match.groups()[0])
+                    damage_str = damage_str[match.span()[1]:]
+                else:
+                    print("Malformed string for damage")
+                    exit()
+        return total
 
     def do_turn(creature, creatures):
         print("$$$ {} $$$".format(creature["NAME"]))
+        attacks_left = int(creature['NUM_ATTACKS'])
         while True:
+            print("Number of attacks left: {}".format(attacks_left))
             command = input("===>").strip()
             if command in ['exit', 'quit', 'done']:   break
             if not command:         continue
@@ -150,12 +167,17 @@ def combat_menu(creatures):
 
 
                 elif split[0] == 'attack':
+                    if attacks_left <= 0:
+                        print('{} has no attacks left!'.format(
+                            creature['NAME']))
+                        continue
+                    attacks_left -= 1
                     if len(split) <= 1:  print("select weapon"); continue
                     choice = split[1]
 
                     _a = [attack for attack in creature['ATTACKS']]
                     if choice.isdigit():
-                        if int(choice) > len(creature['ATTACKS']) or        \
+                        if int(choice) >= len(creature['ATTACKS']) or        \
                            int(choice) < 0: print("Not in range!"); continue
                         choice = creature['ATTACKS'][int(choice)]['name']
 
@@ -167,6 +189,7 @@ def combat_menu(creatures):
 
 
                     else:   print("invalid param for damage!"); continue
+
                 else: print("What?"); continue
 
 
@@ -191,7 +214,11 @@ def combat_menu(creatures):
             print("Currently it is {}'s turn".format(creatures[current]['NAME']))
 
         elif command == 'attack':
-            do_turn(creatures[current])
+            do_turn(creatures[current], creatures)
+
+        elif command == 'debug':
+            for each in creatures:
+                print(each)
 
         elif command == 'next':
             current = (current + 1) % len(creatures)

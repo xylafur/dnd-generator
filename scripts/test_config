@@ -4,6 +4,7 @@ NAME=Daigon
 TOKEN=Barbarian
 INITIATIVE=8
 
+NUM_ATTACKS=2
 ATTACKS=greatsword,damage:2d6+10,to-hit:10;longsword,damage:1d6+10,to-hit:10
 MOVEMENT=30
 HP=100

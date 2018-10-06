@@ -28,6 +28,13 @@ def verify_expected_args(creature, _type='SINGLE'):
         print("What is {}?".format(_type))
         exit()
 
+optional_args = {'NUM_ATTACKS': 1}
+def add_missing_optional_args(creature):
+    for key, val in optional_args.items():
+        if key not in creature.keys():
+            creature[key] = val
+
+
 def parse_arg(arg, value):
     if arg == 'ATTACKS':
         attacks = []
@@ -46,7 +53,7 @@ def parse_arg(arg, value):
             attacks.append(weapon)
         return attacks
 
-    elif arg in ['INITIATIVE', "MOVEMENT", 'HP', 'AC']:
+    elif arg in ['INITIATIVE', "MOVEMENT", 'HP', 'AC', 'NUM_ATTACKS', "COUNT"]:
         return int(value)
 
     else:
@@ -91,11 +98,15 @@ def parse_config_file(filename):
 
                     if split[1] == 'CREATURE' and creating_creature:
                         verify_expected_args(current_creature)
+                        add_missing_optional_args(current_creature)
+
                         creatures.append(current_creature)
                         creating_creature = False
 
                     elif split[1] == 'CREATURE-GROUP' and creating_group:
                         verity_expected_args(current_creature, _type='GROUP')
+                        add_missing_optional_args(current_creature)
+
                         creatures.append(current_creature)
                         creating_group = False
 
