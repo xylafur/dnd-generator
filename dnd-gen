@@ -1,29 +1,20 @@
 #!/usr/bin/env python3
-from os import sys
+from sys import argv
 
-from util.parser_util import parser_util, get_parser
-from interactive.dnd_gen_shell import run_interactive
+from scripts.namer import namer_main
 
 
 if __name__ == '__main__':
-    #if len(sys.argv) == 1:
-    #    run_interactive()
-    #    exit(0)
+    if len(argv) <= 1:
+        print("Need to supply script name and then arguments to pass to that "
+              "script!")
+        exit()
+    if argv[1] == 'namer':
+        namer_main()
+    else:
+        print("I'm not fully functional yet, I don't know how to run the "
+              "script {}".format(argv[1]))
 
-    parser = get_parser()
-    args, leftovers = parser.parse_known_args()
-
-    if len(sys.argv) <= 1:
-        parser.print_help()
-        parser.exit(1)
-
-    try:
-        parser_util(args.which, args)
-
-    except AttributeError:
-        print("Error in parsing arguments")
-        parser.print_help()
-        sys.exit(1)
 
 
 

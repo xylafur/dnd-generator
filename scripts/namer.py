@@ -224,4 +224,10 @@ def namer_table():
     for i, n in enumerate(female_dwarves):
         print('{:02d}   {:15s}'.format(i+1, n))
 
+def namer_main(*args, **kwds):
+    """
+        Not fully functional, displaying how this should work
+    """
+    print(name_human())
+
 
