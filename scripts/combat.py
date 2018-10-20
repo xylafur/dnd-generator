@@ -2,7 +2,7 @@ import sys
 import os
 import random
 
-from parser import parse_config_file
+from scripts.parser import parse_config_file
 
 #commands to be used in the main menu, this is just the help really though.
 #the actual definition of what these commands do is implemented in the main

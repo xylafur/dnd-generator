@@ -1,0 +1,27 @@
+#!/bin/python3
+
+from random import randint
+from sys import argv
+
+damage = {
+        'longsword': lambda : randint(1, 8) + 2 + 2,
+        'longbow': lambda : randint(1, 8) + 1,
+        'handaxe': lambda : randint(1, 6) + 2,
+    }
+
+to_hit = {
+        'longsword': 5 + 1,
+        'longbow': 4,
+        'handaxe': 5,
+    }
+
+if __name__ == '__main__':
+    if len(argv) == 2:
+        print("To hit: {}, damage: {}".format(randint(1, 20) + to_hit[argv[1]],
+                                              damage[argv[1]]()))
+    else:
+        print("usage: {} <weapon name>".format(argv[0]))
+        print("Weapons:")
+        for weapon in damage:
+            print("    {}".format(weapon))
+
