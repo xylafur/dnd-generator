@@ -1,5 +1,3 @@
-#!/bin/python3
-from sys import argv
 from random import randint
 
 skills = {
@@ -49,19 +47,19 @@ def save(stat):
 
 funcs = {'roll': roll, 'save': save}
 
-if __name__ == '__main__':
-    if len(argv) == 2:
-        if argv[1] in ['initiative', 'init']:
+def roll_main(*args, **kwds):
+    if len(args) == 1:
+        if args[0] in ['initiative', 'init']:
             print("initiative: {}".format(randint(1, 20) + initiative))
-        elif argv[1] in skills.keys():
-            roll(argv[1])
-        elif argv[1].isnumeric():
-            print(randint(1, int(argv[1])))
+        elif args[0] in skills.keys():
+            roll(args[1])
+        elif args[0].isnumeric():
+            print(randint(1, int(args[1])))
         else:
-            print("{} is not a valid command".format(argv[1]))
+            print("{} is not a valid command".format(args[0]))
 
-    elif len(argv) == 3:
-        if argv[1] == 'save':
-            save(argv[2])
+    elif len(args) == 2:
+        if args[2] == 'save':
+            save(args[1])
     else:
         roll()

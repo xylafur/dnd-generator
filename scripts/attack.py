@@ -15,12 +15,13 @@ to_hit = {
         'handaxe': 5,
     }
 
-if __name__ == '__main__':
-    if len(argv) == 2:
-        print("To hit: {}, damage: {}".format(randint(1, 20) + to_hit[argv[1]],
-                                              damage[argv[1]]()))
+def attack_main(*args, name="attack", **kwds):
+    if len(args) == 1:
+        weapon = args[0]
+        print("To hit: {}, damage: {}".format(randint(1, 20) + to_hit[weapon],
+                                              damage[weapon]()))
     else:
-        print("usage: {} <weapon name>".format(argv[0]))
+        print("usage: {} <weapon name>".format(name))
         print("Weapons:")
         for weapon in damage:
             print("    {}".format(weapon))

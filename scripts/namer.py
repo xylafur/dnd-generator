@@ -1,12 +1,6 @@
 
 import random
 
-races = ['elf', 'dwarf', 'orc', 'human', 'goliath']
-
-def usage(name='namer'):
-    print("{} [-g <Male(1)|Female(0)>] -r <{}>  ".format(name, "|".format(races)))
-    exit()
-
 # functions
 def read_names(path_to_names='./assets/names.txt'):
     character_names = []
@@ -185,13 +179,8 @@ def generate_name(race, gender):
         generate_name('dwarf',1)  # generates a female dwarf name
     """
     assert(type(race) == str and type(gender) == int)
-    race_pair = {
-        'elf': name_elf,
-        'dwarf': name_dwarf,
-        'orc': name_orc,
-        'human': name_human,
-        'goliath': name_goliath
-    }
+    global race_pair
+
     if race not in race_pair:
         print('Race '+race+' is not a supported race.')
         return 'unsupported_race:'+race
@@ -227,6 +216,21 @@ def namer_table():
     print('female_dwarfs')
     for i, n in enumerate(female_dwarves):
         print('{:02d}   {:15s}'.format(i+1, n))
+
+race_pair = {
+    'elf': name_elf,
+    'dwarf': name_dwarf,
+    'orc': name_orc,
+    'human': name_human,
+    'goliath': name_goliath
+}
+races = list(race_pair.keys())
+
+choose_random_race = lambda : random.choice(races)
+
+def usage(name='namer'):
+    print("{} [-g <Male(1)|Female(0)>] -r <{}>  ".format(name, "|".format(races)))
+    exit()
 
 def namer_main(*args, **kwds):
     """

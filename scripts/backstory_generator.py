@@ -6,11 +6,10 @@ sys.path.append("..")
 
 from random import choice, randint
 
-from scripts.namer import generate_name
+from scripts.namer import generate_name, choose_random_race
 import scripts.stats
 
 from utilities.races import races
-from utilities.races import choose_random_race
 from utilities.random_die import roll_event, roll_d100
 from utilities.exceptions import RaceNotSupportedException
 from utilities.random_die import roll_d4, roll_d6, roll_d8, roll_d10, \

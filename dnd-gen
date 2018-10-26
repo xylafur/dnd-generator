@@ -2,18 +2,28 @@
 from sys import argv
 
 from scripts.namer import namer_main
+from scripts.attack import attack_main
+from scripts.roll import roll_main
 
+programs = {
+    'namer': namer_main,
+    'attack': attack_main,
+    'roll': roll_main
+}
+
+def usage():
+    print("{} <{}> [program args]".format(argv[0], "|".join(list(programs.keys()))))
+    exit()
 
 if __name__ == '__main__':
     if len(argv) <= 1:
-        print("Need to supply script name and then arguments to pass to that "
-              "script!")
-        exit()
-    if argv[1] == 'namer':
-        namer_main(*argv[2:])
-    else:
+        usage()
+    elif argv[1] not in programs.keys():
         print("I'm not fully functional yet, I don't know how to run the "
               "script {}".format(argv[1]))
+    programs[argv[1]](*argv[2:])
+
+
 
 
 
