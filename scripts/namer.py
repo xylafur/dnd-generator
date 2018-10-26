@@ -1,6 +1,12 @@
 
 import random
 
+races = ['elf', 'dwarf', 'orc', 'human', 'goliath']
+
+def usage(name='namer'):
+    print("{} [-g <Male(1)|Female(0)>] -r <{}>  ".format(name, "|".format(races)))
+    exit()
+
 # functions
 def read_names(path_to_names='./assets/names.txt'):
     character_names = []
@@ -41,7 +47,6 @@ def name_elf(gender=0):
 
     nm1, nm2 = (elf_fem_1, elf_fem_2) if gender else (elf_male_1, elf_male_2)
     return random.choice(nm1) + random.choice(nm2)
-
 
 def name_dwarf(gender=0):
     """ returns an dwarf name """
@@ -88,7 +93,6 @@ def name_dwarf(gender=0):
     nm1, nm2 = (dwarf_fem_1, dwarf_fem_2) if gender else (dwarf_male_1, dwarf_male_2)
     return random.choice(nm1) + random.choice(nm2)
 
-
 def name_orc(gender):
     """ returns an orc name """
     nm1 = ["","","","b","bh","br","d","dh","dr","g","gh","gr","j","l","m","n",
@@ -118,7 +122,6 @@ def name_orc(gender):
                 random.choice(nm2) + random.choice(nm4)
 
     pass
-
 
 def name_human(gender=0):
     male = [
@@ -193,6 +196,7 @@ def generate_name(race, gender):
         print('Race '+race+' is not a supported race.')
         return 'unsupported_race:'+race
 
+    print("Creating {} {}".format("Male" if gender else "Female", race))
     return race_pair[race](gender)
 
 
@@ -228,6 +232,26 @@ def namer_main(*args, **kwds):
     """
         Not fully functional, displaying how this should work
     """
-    print(name_human())
+    race = random.choice(races)
+    gender = random.choice([0, 1])
+    continue_next = False
+    for ii in range(len(args)):
+        if continue_next:
+            continue_next = not continue_next
+            continue
+        if args[ii] in ['-r', '--race']:
+            race = args[ii + 1]
+        elif args[ii] in ['-g', '--gender']:
+            if isinstance(args[ii+1], int) or args[ii+1].isdigit():
+                gender = int(args[ii+1])
+            else:
+                if args[ii+1] not in ['Male', 'Female']:
+                    usage()
+                gender = 1 if args[ii+1] == 'Male' else 0
 
-
+        else:
+            print("{} is not a valid argument!".format(args[ii]))
+            usage();
+        continue_next = True
+    name = generate_name(race, gender)
+    print(name)

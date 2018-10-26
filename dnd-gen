@@ -10,7 +10,7 @@ if __name__ == '__main__':
               "script!")
         exit()
     if argv[1] == 'namer':
-        namer_main()
+        namer_main(*argv[2:])
     else:
         print("I'm not fully functional yet, I don't know how to run the "
               "script {}".format(argv[1]))
