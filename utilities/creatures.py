@@ -1,6 +1,6 @@
 """ THis is the module that defines all of the characters and their atributes
 """
-from character_generator.char_stats import *
+from stats import *
 
 class InvalidCreatureParameterException(Exception): pass
 class Creature:

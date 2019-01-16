@@ -42,7 +42,6 @@ def name_elf(gender=0):
     nm1, nm2 = (elf_fem_1, elf_fem_2) if gender else (elf_male_1, elf_male_2)
     return random.choice(nm1) + random.choice(nm2)
 
-
 def name_dwarf(gender=0):
     """ returns an dwarf name """
     dwarf_male_1 = [
@@ -88,7 +87,6 @@ def name_dwarf(gender=0):
     nm1, nm2 = (dwarf_fem_1, dwarf_fem_2) if gender else (dwarf_male_1, dwarf_male_2)
     return random.choice(nm1) + random.choice(nm2)
 
-
 def name_orc(gender):
     """ returns an orc name """
     nm1 = ["","","","b","bh","br","d","dh","dr","g","gh","gr","j","l","m","n",
@@ -119,7 +117,6 @@ def name_orc(gender):
 
     pass
 
-
 def name_human(gender=0):
     male = [
             'muhammad', 'mohammad', 'farhan', 'raj', 'arjun',
@@ -138,7 +135,7 @@ def name_human(gender=0):
               ]
     lastnm = [
               'nguyen', 'mohammad', 'ashok', 'abdullah', 'bin laden', 'gopaludi',
-              'chen', 'fong', 'fang', 'li', 
+              'chen', 'fong', 'fang', 'li',
               'delaroux', 'smith', 'richardson',
               "o'brien",
              ]
@@ -147,6 +144,27 @@ def name_human(gender=0):
 
     return first + ' ' + random.choice(lastnm)
 
+def name_goliath(gender=None):
+    birth = [
+        "Aukan", "Eglath", "Gae-Al", "Gauthak", "Ilikan", "Keothi", "Kuori",
+        "Lo-Kag", "Manneo", "Maveith", "Nalla", "Orilo", "Paavu", "Pethani",
+        "Thalai", "Thotham", "Uthal", "Vaunea", "Vimak"
+    ]
+
+    nick = [
+        "Bearkiller", "Dawncaller", "Fearless", "Flintfinder", "Horncarver",
+        "Keeneye", "Lonehunter", "Longleaper", "Rootsmasher", "Skywatcher",
+        "Steadyhand", "Threadtwister", "Twice-Orphaned", "Twistedlimb",
+        "Wordpainter"
+    ]
+
+    clan = [
+        "Anakalathai", "Elanithino", "Gathakanathi", "Kalagiano",
+        "Katho-Olavi", "Kolae-Gileana", "Ogolakanu", "Thuliaga",
+        "Thunukalathi", "Vaimei-Laga"
+    ]
+
+    return " ".join(map(random.choice, [birth, nick, clan]))
 
 def generate_name(race, gender):
     """
@@ -161,16 +179,13 @@ def generate_name(race, gender):
         generate_name('dwarf',1)  # generates a female dwarf name
     """
     assert(type(race) == str and type(gender) == int)
-    race_pair = {
-        'elf': name_elf,
-        'dwarf': name_dwarf,
-        'orc': name_orc,
-        'human': name_human,
-    }
+    global race_pair
+
     if race not in race_pair:
         print('Race '+race+' is not a supported race.')
         return 'unsupported_race:'+race
 
+    print("Creating {} {}".format("Male" if gender else "Female", race))
     return race_pair[race](gender)
 
 
@@ -202,4 +217,45 @@ def namer_table():
     for i, n in enumerate(female_dwarves):
         print('{:02d}   {:15s}'.format(i+1, n))
 
+race_pair = {
+    'elf': name_elf,
+    'dwarf': name_dwarf,
+    'orc': name_orc,
+    'human': name_human,
+    'goliath': name_goliath
+}
+races = list(race_pair.keys())
 
+choose_random_race = lambda : random.choice(races)
+
+def usage(name='namer'):
+    print("{} [-g <Male(1)|Female(0)>] -r <{}>  ".format(name, "|".format(races)))
+    exit()
+
+def namer_main(*args, **kwds):
+    """
+        Not fully functional, displaying how this should work
+    """
+    race = random.choice(races)
+    gender = random.choice([0, 1])
+    continue_next = False
+    for ii in range(len(args)):
+        if continue_next:
+            continue_next = not continue_next
+            continue
+        if args[ii] in ['-r', '--race']:
+            race = args[ii + 1]
+        elif args[ii] in ['-g', '--gender']:
+            if isinstance(args[ii+1], int) or args[ii+1].isdigit():
+                gender = int(args[ii+1])
+            else:
+                if args[ii+1] not in ['Male', 'Female']:
+                    usage()
+                gender = 1 if args[ii+1] == 'Male' else 0
+
+        else:
+            print("{} is not a valid argument!".format(args[ii]))
+            usage();
+        continue_next = True
+    name = generate_name(race, gender)
+    print(name)

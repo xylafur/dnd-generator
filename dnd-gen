@@ -1,29 +1,30 @@
 #!/usr/bin/env python3
-from os import sys
+from sys import argv
 
-from util.parser_util import parser_util, get_parser
-from interactive.dnd_gen_shell import run_interactive
+from scripts.namer import namer_main
+from scripts.attack import attack_main
+from scripts.roll import roll_main
 
+programs = {
+    'namer': namer_main,
+    'attack': attack_main,
+    'roll': roll_main
+}
+
+def usage():
+    print("{} <{}> [program args]".format(argv[0], "|".join(list(programs.keys()))))
+    exit()
 
 if __name__ == '__main__':
-    #if len(sys.argv) == 1:
-    #    run_interactive()
-    #    exit(0)
+    if len(argv) <= 1:
+        usage()
+    elif argv[1] not in programs.keys():
+        print("I'm not fully functional yet, I don't know how to run the "
+              "script {}".format(argv[1]))
+    programs[argv[1]](*argv[2:])
 
-    parser = get_parser()
-    args, leftovers = parser.parse_known_args()
 
-    if len(sys.argv) <= 1:
-        parser.print_help()
-        parser.exit(1)
 
-    try:
-        parser_util(args.which, args)
-
-    except AttributeError:
-        print("Error in parsing arguments")
-        parser.print_help()
-        sys.exit(1)
 
 
 

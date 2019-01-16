@@ -5,7 +5,8 @@ races = [
          "elf",
          "dwarf",
          "orc",
-         #"human",
+         "goliath",
+         "human",
         ]
 
 
